@@ -310,5 +310,23 @@ export const VIDEOS = [
     views: '64K lượt xem',
     thumbnail: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=800&q=80',
     duration: '06:15',
+  },
+  {
+    id: 'khong-gian-co-do',
+    title: 'Khám phá không gian ấm cúng đậm chất Cố Đô tại hệ thống Nét Huế',
+    channel: 'Nét Huế Official',
+    views: '118K lượt xem',
+    thumbnail: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    duration: '05:30',
+  },
+  {
+    id: 'mam-co-hue',
+    title: 'Mâm cỗ tiệc Tết sum vầy và câu chuyện ẩm thực cung đình Huế',
+    channel: 'Nét Huế Official',
+    views: '97K lượt xem',
+    thumbnail: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
+    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    duration: '09:10',
   }
 ];
