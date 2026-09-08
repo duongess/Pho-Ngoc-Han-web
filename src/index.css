@@ -3,6 +3,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 130px;
     font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
   }
 }

@@ -291,8 +291,8 @@ export const VIDEOS = [
     title: 'Bà Năm Vlog lên thành phố - Chất quá bà ơi!',
     channel: 'Nét Huế Official',
     views: '152K lượt xem',
-    thumbnail: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80',
-    videoUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+    thumbnail: 'https://i.ytimg.com/vi/wTOAy5NlOWw/hqdefault.jpg',
+    videoUrl: 'https://www.youtube.com/shorts/wTOAy5NlOWw',
     duration: '08:45',
   },
   {
@@ -301,6 +301,7 @@ export const VIDEOS = [
     channel: 'Nét Huế Official',
     views: '89K lượt xem',
     thumbnail: 'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?auto=format&fit=crop&w=800&q=80',
+    videoUrl: '/video/Download.mp4',
     duration: '12:20',
   },
   {

@@ -1,8 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Play, X, ChevronLeft, ChevronRight, Eye, Film, Sparkles, Clock, Youtube } from 'lucide-react';
+import { Play, X, ChevronLeft, ChevronRight, Eye, Film, Sparkles, Clock, Youtube, ExternalLink } from 'lucide-react';
 import { VIDEOS } from '../data/mockData';
 import { ImagePlaceholder } from './ImagePlaceholder';
+
+// Extract YouTube ID from various formats (shorts, watch?v=, youtu.be, embed)
+export function getYouTubeId(url?: string): string | null {
+  if (!url) return null;
+  const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+  if (shortsMatch) return shortsMatch[1];
+
+  const watchMatch = url.match(/[?&]v=([a-zA-Z0-9_-]+)/);
+  if (watchMatch) return watchMatch[1];
+
+  const youtuBeMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+  if (youtuBeMatch) return youtuBeMatch[1];
+
+  const embedMatch = url.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/);
+  if (embedMatch) return embedMatch[1];
+
+  return null;
+}
+
+// Extract TikTok ID
+export function getTikTokId(url?: string): string | null {
+  if (!url) return null;
+  const match = url.match(/tiktok\.com\/.*\/video\/(\d+)/);
+  return match ? match[1] : null;
+}
+
+// Resolve best thumbnail: if YouTube URL is provided, automatically resolve to YouTube's image if needed
+export function resolveVideoThumbnail(video: { thumbnail: string; videoUrl?: string }): string {
+  const ytId = getYouTubeId(video.videoUrl);
+  if (ytId) {
+    if (!video.thumbnail || video.thumbnail.includes('unsplash.com')) {
+      return `https://i.ytimg.com/vi/${ytId}/hqdefault.jpg`;
+    }
+  }
+  return video.thumbnail;
+}
 
 export const VideoSection: React.FC = () => {
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
@@ -66,6 +102,22 @@ export const VideoSection: React.FC = () => {
 
   // Exact X offset to place active card dead-center in the slider container
   const trackOffset = (containerWidth - cardWidth) / 2 - activeVideoIndex * (cardWidth + gap);
+
+  // Parse embed information for current video
+  const currentYtId = getYouTubeId(currentVideo.videoUrl);
+  const isCurrentShort = Boolean(currentVideo.videoUrl?.includes('/shorts/'));
+  const currentTtId = getTikTokId(currentVideo.videoUrl);
+
+  let embedSrc = '';
+  if (currentYtId) {
+    embedSrc = `https://www.youtube-nocookie.com/embed/${currentYtId}?autoplay=1&rel=0&playsinline=1`;
+  } else if (currentTtId) {
+    embedSrc = `https://www.tiktok.com/embed/v2/${currentTtId}`;
+  } else if (currentVideo.videoUrl) {
+    embedSrc = currentVideo.videoUrl;
+  } else {
+    embedSrc = 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1';
+  }
 
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden select-none">
@@ -138,6 +190,7 @@ export const VideoSection: React.FC = () => {
             {VIDEOS.map((video, idx) => {
               const isActive = idx === activeVideoIndex;
               const isAdjacent = Math.abs(idx - activeVideoIndex) === 1;
+              const displayThumb = resolveVideoThumbnail(video);
 
               return (
                 <motion.div
@@ -162,7 +215,7 @@ export const VideoSection: React.FC = () => {
                   >
                     {/* Thumbnail Image */}
                     <ImagePlaceholder
-                      src={video.thumbnail}
+                      src={displayThumb}
                       alt={video.title}
                       aspectRatio="video"
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
@@ -202,7 +255,7 @@ export const VideoSection: React.FC = () => {
                       <div className="min-w-0">
                         <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] bg-red-600 px-2 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">
                           <Film className="w-3 h-3" />
-                          Nét Huế TV
+                          {video.videoUrl?.includes('/shorts/') ? 'YouTube Shorts' : 'Nét Huế TV'}
                         </span>
                         <p className="text-xs sm:text-sm md:text-base font-bold mt-1 line-clamp-1 drop-shadow-md text-white">
                           {video.title}
@@ -312,7 +365,9 @@ export const VideoSection: React.FC = () => {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.88, opacity: 0, y: 20 }}
               transition={{ type: "spring", stiffness: 320, damping: 28 }}
-              className="relative w-full max-w-3xl bg-stone-950 rounded-2xl overflow-hidden shadow-2xl border border-stone-800"
+              className={`relative w-full ${
+                isCurrentShort ? 'max-w-md' : 'max-w-3xl'
+              } bg-stone-950 rounded-2xl overflow-hidden shadow-2xl border border-stone-800`}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Close button */}
@@ -324,20 +379,32 @@ export const VideoSection: React.FC = () => {
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="aspect-video w-full bg-black flex items-center justify-center relative">
+              <div className={`${isCurrentShort ? 'aspect-[9/16] max-h-[75vh]' : 'aspect-video'} w-full bg-black flex items-center justify-center relative`}>
                 <iframe
                   className="w-full h-full"
-                  src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1"
+                  src={embedSrc}
                   title={currentVideo.title}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 />
               </div>
-              <div className="p-4 bg-stone-900 text-stone-100 flex items-center justify-between">
-                <div>
-                  <h4 className="font-bold text-sm sm:text-base font-serif text-amber-200">{currentVideo.title}</h4>
+
+              <div className="p-4 bg-stone-900 text-stone-100 flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <h4 className="font-bold text-sm sm:text-base font-serif text-amber-200 truncate">{currentVideo.title}</h4>
                   <p className="text-xs text-stone-400 mt-0.5">Nhà hàng Nét Huế - Tinh hoa ẩm thực Huế trứ danh</p>
                 </div>
+                {currentVideo.videoUrl && (
+                  <a
+                    href={currentVideo.videoUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition shrink-0 shadow"
+                  >
+                    <ExternalLink className="w-3.5 h-3.5" />
+                    <span>Mở link</span>
+                  </a>
+                )}
               </div>
             </motion.div>
           </motion.div>

@@ -31,7 +31,7 @@ export const BrandStory: React.FC = () => {
 
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-3xl sm:text-4xl font-serif font-black text-[#f59e0b] tracking-wide">
-                Nét Huế
+                Phở Ngọc Hân
               </h2>
               <Sparkles className="w-5 h-5 text-amber-400 animate-pulse" />
             </div>

@@ -50,7 +50,7 @@ export const Header: React.FC<HeaderProps> = ({
       if (totalHeight > 0) {
         setScrollProgress((window.scrollY / totalHeight) * 100);
       }
-      setIsScrolled(window.scrollY > 80);
+      setIsScrolled(window.scrollY > 40);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -76,9 +76,9 @@ export const Header: React.FC<HeaderProps> = ({
   const currentAnnouncement = announcements[tickerIndex];
 
   return (
-    <>
+    <header className="sticky top-0 z-40 w-full select-none shadow-md transition-shadow duration-300">
       {/* Top Fixed Scroll Progress Indicator */}
-      <div className="fixed top-0 left-0 right-0 h-1 z-50 bg-black/10 pointer-events-none">
+      <div className="absolute top-0 left-0 right-0 h-1 z-50 bg-black/10 pointer-events-none">
         <motion.div
           className="h-full bg-gradient-to-r from-yellow-300 via-amber-400 to-red-500 shadow-sm"
           style={{ width: `${scrollProgress}%` }}
@@ -86,7 +86,11 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Top Announcement Bar with Rotating Text Transition Effect */}
-      <div className="bg-[#b45309] text-amber-100 text-xs py-1.5 px-4 overflow-hidden border-b border-amber-500/30">
+      <div 
+        className={`bg-[#b45309] text-amber-100 text-xs px-4 overflow-hidden border-b border-amber-500/30 transition-all duration-300 ${
+          isScrolled ? 'py-1 sm:py-1.5' : 'py-1.5'
+        }`}
+      >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2 overflow-hidden flex-1">
             <span className="bg-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full uppercase shrink-0">
@@ -118,9 +122,14 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      <header className="relative z-30 w-full bg-gradient-to-r from-[#d96b0c] via-[#e57a1b] to-[#d96b0c] shadow-md text-white select-none">
+      {/* Main Navigation Row & Brand Identity */}
+      <div className={`w-full bg-gradient-to-r from-[#d96b0c] via-[#e57a1b] to-[#d96b0c] text-white transition-all duration-300 ${
+        isScrolled ? 'shadow-lg backdrop-blur-md bg-opacity-98' : ''
+      }`}>
         {/* Top Banner Row */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between border-b border-white/15">
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between border-b border-white/15 transition-all duration-300 ${
+          isScrolled ? 'py-2 sm:py-2.5' : 'py-3'
+        }`}>
           {/* Left: Language Toggle */}
           <div className="flex items-center gap-2">
             <button
@@ -140,32 +149,34 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Center: Nét Huế Brand Logo with gentle hover pulse */}
           <div 
             onClick={() => handleNavClick('trang-chu')} 
-            className="cursor-pointer flex flex-col items-center group text-center py-1"
+            className="cursor-pointer flex flex-col items-center group text-center py-0.5"
           >
             <div className="flex items-center gap-2">
               {/* Traditional Bowl Stylized Emblem */}
-              <div className="w-9 h-9 rounded-full bg-amber-950/30 border border-amber-300/60 flex items-center justify-center p-1.5 shadow-inner group-hover:scale-105 transition-transform">
-                <svg viewBox="0 0 48 48" fill="none" className="w-6 h-6 text-amber-200" stroke="currentColor">
-                  <path d="M6 22C6 34 16 40 24 40C32 40 42 34 42 22H6Z" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="#b45309" />
-                  <path d="M14 40L10 44H38L34 40" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M18 14C18 10 20 8 20 6" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M24 14C24 9 26 7 26 5" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M30 14C30 10 32 8 32 6" strokeWidth="2.5" strokeLinecap="round" />
-                </svg>
+              <div className={`rounded-full bg-amber-950/30 border border-amber-300/60 flex items-center justify-center shadow-inner group-hover:scale-105 transition-all duration-300 ${
+                isScrolled ? 'w-8 h-8' : 'w-9 h-9'
+              }`}>
+                <img
+                  src="/pho_ngoc_han_logo.svg"
+                  alt="Logo"
+                  className="w-full h-full rounded-full object-cover"
+                />
               </div>
               <div className="flex flex-col text-left">
-                <span className="text-2xl sm:text-3xl font-serif font-black tracking-wide text-amber-100 drop-shadow-sm leading-none group-hover:text-yellow-200 transition-colors">
-                  Nét Huế
+                <span className={`font-serif font-black tracking-wide text-amber-100 drop-shadow-sm leading-none group-hover:text-yellow-200 transition-all duration-300 ${
+                  isScrolled ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'
+                }`}>
+                  Phở Ngọc Hân
                 </span>
-                <span className="text-[11px] sm:text-xs font-serif italic text-amber-200/90 tracking-widest font-normal">
-                  Tinh hoa ẩm thực Huế
+                <span className="text-[10px] sm:text-[11px] font-serif italic text-amber-200/90 tracking-widest font-normal">
+                  Tinh hoa ẩm thực
                 </span>
               </div>
             </div>
           </div>
 
           {/* Right: Cart & Search */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               id="header-search-btn"
               onClick={onOpenSearch}
@@ -212,9 +223,13 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Main Navigation Bar (Stone texture pill look like original site) */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 hidden lg:block">
-          <div className="bg-[#ece7de] text-[#44382e] rounded-full px-6 py-1.5 flex items-center justify-between shadow-inner border border-[#dcd3c4]">
-            <nav className="flex items-center space-x-5 xl:space-x-7 text-xs xl:text-sm font-bold tracking-tight">
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 hidden lg:block transition-all duration-300 ${
+          isScrolled ? 'py-1.5' : 'py-2.5'
+        }`}>
+          <div className={`bg-[#ece7de] text-[#44382e] rounded-full px-6 flex items-center justify-between shadow-inner border border-[#dcd3c4] transition-all duration-300 ${
+            isScrolled ? 'py-1 shadow-sm' : 'py-1.5'
+          }`}>
+            <nav className="flex items-center space-x-4 xl:space-x-7 text-xs xl:text-sm font-bold tracking-tight">
               {navItems.map((item) => {
                 const isActive = activeSection === item.id;
                 return (
@@ -257,12 +272,12 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Mobile Drawer Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#f4efe6] text-stone-800 border-b border-amber-300 shadow-xl px-4 py-4 space-y-2 animate-fadeIn">
+          <div className="lg:hidden bg-[#f4efe6] text-stone-800 border-b border-amber-300 shadow-2xl px-4 py-4 space-y-2 animate-fadeIn max-h-[calc(100vh-100px)] overflow-y-auto">
             {navItems.map((item) => (
               <button
                 key={item.id}
                 onClick={() => handleNavClick(item.id)}
-                className={`block w-full text-left py-2.5 px-3 rounded-md text-sm font-bold ${
+                className={`block w-full text-left py-2.5 px-3 rounded-md text-sm font-bold transition-colors ${
                   activeSection === item.id ? 'bg-amber-600 text-white' : 'hover:bg-stone-200/70 text-stone-800'
                 }`}
               >
@@ -289,7 +304,7 @@ export const Header: React.FC<HeaderProps> = ({
             </div>
           </div>
         )}
-      </header>
-    </>
+      </div>
+    </header>
   );
 };
