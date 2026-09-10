@@ -21,7 +21,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
   const [messages, setMessages] = useState([
     {
       sender: 'bot',
-      text: 'Chào mừng bạn đến với Nét Huế! Bạn cần tư vấn thực đơn, đặt bàn tiệc hay giao hàng tận nơi ạ?',
+      text: 'Chào mừng quý khách đến với Phở Ngọc Hân! Bạn muốn đặt phở mang đi, đặt bàn hay cần tư vấn bát phở hợp khẩu vị ạ?',
       time: 'Vừa xong',
     },
   ]);
@@ -60,7 +60,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
         ...prev,
         {
           sender: 'bot',
-          text: 'Cảm ơn quý khách! Chuyên viên tư vấn Nét Huế đang tiếp nhận. Quý khách cũng có thể gọi ngay Hotline 19009077 để được phục vụ nhanh nhất ạ!',
+          text: 'Dạ Cô Hân và quán đã nhận tin nhắn ạ! Quý khách cũng có thể gọi ngay Hotline 0988 567 899 để được phục vụ những bát phở nóng hổi nhanh nhất!',
           time: 'Vừa xong',
         },
       ]);
@@ -69,7 +69,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
 
   return (
     <>
-      {/* 1. Bottom-Left Delivery Badge matching all screenshots */}
+      {/* 1. Bottom-Left Delivery Badge */}
       <motion.div 
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
@@ -78,37 +78,37 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
       >
         <motion.a
           id="floating-delivery-badge"
-          href="tel:19009077"
+          href="tel:0988567899"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="group flex items-center gap-2.5 bg-white text-stone-900 pl-2 pr-4 py-1.5 rounded-full shadow-2xl border-2 border-red-600 transition-all cursor-pointer"
-          title="Gọi giao hàng tận nơi"
+          className="group flex items-center gap-2.5 bg-[#fffdfa] text-stone-900 pl-2 pr-4 py-1.5 rounded-full shadow-2xl border-2 border-[#991b1b] transition-all cursor-pointer"
+          title="Gọi giao phở nóng tận nơi"
         >
           {/* Red Circle with Delivery Scooter */}
-          <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center shadow-md animate-pulse">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#7f1d1d] to-[#b91c1c] text-amber-200 flex items-center justify-center shadow-md animate-pulse border border-amber-300/40">
             <Bike className="w-5 h-5" />
           </div>
           <div className="flex flex-col text-left">
-            <span className="text-[10px] text-stone-500 font-medium leading-none">
-              Giao hàng tận nơi
+            <span className="text-[10px] text-amber-900 font-serif font-medium leading-none">
+              Giao phở nóng tận nơi
             </span>
-            <span className="text-sm font-black text-red-600 leading-tight">
-              19009077
+            <span className="text-sm font-black text-[#991b1b] font-serif leading-tight">
+              0988 567 899
             </span>
           </div>
         </motion.a>
       </motion.div>
 
-      {/* 2. Floating Right Utility Buttons matching all screenshots */}
+      {/* 2. Floating Right Utility Buttons */}
       <div className="fixed right-3 sm:right-4 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-2.5">
         {/* Call button */}
         <motion.a
           id="floating-call-btn"
-          href="tel:19009077"
+          href="tel:0988567899"
           whileHover={{ scale: 1.15, x: -3 }}
           whileTap={{ scale: 0.92 }}
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#d96b0c] hover:bg-[#d96b0c] hover:text-white shadow-xl flex items-center justify-center border border-amber-300 transition-colors"
-          title="Hotline 19009077"
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#fffdfa] text-[#7f1d1d] hover:bg-[#7f1d1d] hover:text-amber-100 shadow-xl flex items-center justify-center border border-amber-300 transition-colors"
+          title="Hotline 0988 567 899"
         >
           <Phone className="w-5 h-5" />
         </motion.a>
@@ -119,8 +119,8 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           onClick={onScrollToStores}
           whileHover={{ scale: 1.15, x: -3 }}
           whileTap={{ scale: 0.92 }}
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#d96b0c] hover:bg-[#d96b0c] hover:text-white shadow-xl flex items-center justify-center border border-amber-300 transition-colors cursor-pointer"
-          title="Xem hệ thống nhà hàng"
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#fffdfa] text-[#7f1d1d] hover:bg-[#7f1d1d] hover:text-amber-100 shadow-xl flex items-center justify-center border border-amber-300 transition-colors cursor-pointer"
+          title="Xem quán Phở Ngọc Hân"
         >
           <MapPin className="w-5 h-5" />
         </motion.button>
@@ -131,7 +131,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           onClick={onOpenReservation}
           whileHover={{ scale: 1.15, x: -3 }}
           whileTap={{ scale: 0.92 }}
-          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white text-[#d96b0c] hover:bg-[#d96b0c] hover:text-white shadow-xl flex items-center justify-center border border-amber-300 transition-colors cursor-pointer"
+          className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#fffdfa] text-[#7f1d1d] hover:bg-[#7f1d1d] hover:text-amber-100 shadow-xl flex items-center justify-center border border-amber-300 transition-colors cursor-pointer"
           title="Đặt bàn ngay"
         >
           <CalendarCheck className="w-5 h-5" />
@@ -148,7 +148,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
               exit={{ opacity: 0, scale: 0.5 }}
               whileHover={{ scale: 1.15, x: -3 }}
               whileTap={{ scale: 0.9 }}
-              className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-stone-900 text-amber-400 hover:text-white shadow-2xl flex items-center justify-center border border-amber-500/40 cursor-pointer overflow-hidden"
+              className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#450a0a] text-amber-300 hover:text-white shadow-2xl flex items-center justify-center border border-amber-400/40 cursor-pointer overflow-hidden"
               title="Cuộn lên đầu trang"
               aria-label="Lên đầu trang"
             >
@@ -158,14 +158,14 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
                   cx="18"
                   cy="18"
                   r="15"
-                  className="stroke-stone-700 fill-none"
+                  className="stroke-[#7f1d1d]/40 fill-none"
                   strokeWidth="2.5"
                 />
                 <circle
                   cx="18"
                   cy="18"
                   r="15"
-                  className="stroke-[#d96b0c] fill-none transition-all duration-150"
+                  className="stroke-amber-400 fill-none transition-all duration-150"
                   strokeWidth="2.5"
                   strokeDasharray="94.2"
                   strokeDashoffset={94.2 - (94.2 * scrollProgress) / 100}
@@ -178,16 +178,16 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* 3. Bottom-Right Support Chat Widget matching all screenshots */}
+      {/* 3. Bottom-Right Support Chat Widget */}
       <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2">
-        {/* Welcome bubble like in screenshots */}
+        {/* Welcome bubble */}
         <AnimatePresence>
           {!chatOpen && !chatDismissed && (
             <motion.div 
               initial={{ opacity: 0, y: 15, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, scale: 0.8 }}
-              className="bg-white text-stone-800 text-xs px-3.5 py-2.5 rounded-2xl shadow-xl border border-stone-200 max-w-[220px] relative"
+              className="bg-[#fffdfa] text-stone-800 text-xs px-3.5 py-2.5 rounded-2xl shadow-xl border border-amber-300 max-w-[220px] relative"
             >
               <button
                 onClick={() => setChatDismissed(true)}
@@ -196,12 +196,12 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
               >
                 ×
               </button>
-              <div className="flex items-center gap-1.5 text-amber-700 font-bold mb-1">
+              <div className="flex items-center gap-1.5 text-[#7f1d1d] font-serif font-bold mb-1">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                <span>Nét Huế</span>
+                <span>Phở Ngọc Hân</span>
               </div>
-              <p className="text-stone-600 leading-snug">
-                Chào mừng bạn đến với website của chúng tôi!
+              <p className="text-stone-600 leading-snug font-literary">
+                Chào mừng quý khách đến với quán phở của Cô giáo Hân!
               </p>
             </motion.div>
           )}
@@ -213,10 +213,10 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           onClick={() => setChatOpen(!chatOpen)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="bg-[#0084ff] hover:bg-[#0074e4] text-white px-4 py-2 rounded-full shadow-xl flex items-center gap-2 font-bold text-xs sm:text-sm cursor-pointer"
+          className="bg-gradient-to-r from-[#7f1d1d] to-[#991b1b] hover:from-[#6b1414] hover:to-[#7f1d1d] text-amber-100 border border-amber-400/40 px-4 py-2.5 rounded-full shadow-xl flex items-center gap-2 font-serif font-bold text-xs sm:text-sm cursor-pointer"
         >
-          <MessageCircle className="w-4 h-4 fill-current" />
-          <span>Hỗ trợ</span>
+          <MessageCircle className="w-4 h-4 text-amber-300 fill-current" />
+          <span>Trò chuyện</span>
         </motion.button>
 
         {/* Live Chat Popover Window */}
@@ -227,22 +227,22 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 20, scale: 0.95 }}
               transition={{ type: 'spring', stiffness: 350, damping: 25 }}
-              className="w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-stone-200 overflow-hidden flex flex-col max-h-[460px]"
+              className="w-80 sm:w-96 bg-[#fffdfa] rounded-3xl shadow-2xl border-2 border-amber-900/40 overflow-hidden flex flex-col max-h-[460px]"
             >
               {/* Chat header */}
-              <div className="bg-[#0084ff] text-white px-4 py-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-full bg-white text-[#0084ff] font-serif font-bold text-xs flex items-center justify-center shadow-xs">
+              <div className="bg-gradient-to-r from-[#7f1d1d] via-[#991b1b] to-[#6b1414] text-amber-100 px-4 py-3.5 flex items-center justify-between border-b border-amber-400/50">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-full bg-amber-400/20 border border-amber-300/40 text-amber-200 font-serif font-black text-xs flex items-center justify-center shadow-xs">
                     NH
                   </div>
                   <div>
-                    <h4 className="font-bold text-sm leading-none">Hỗ trợ trực tuyến Nét Huế</h4>
-                    <span className="text-[10px] text-blue-100">Luôn sẵn sàng phục vụ</span>
+                    <h4 className="font-serif font-bold text-sm leading-none text-amber-100">Phở Ngọc Hân</h4>
+                    <span className="text-[10px] text-amber-200/80 font-literary">Cô Hân & nhà bếp trực tuyến</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setChatOpen(false)}
-                  className="text-white/80 hover:text-white p-1 cursor-pointer"
+                  className="text-amber-200 hover:text-white p-1 cursor-pointer"
                   aria-label="Đóng chat"
                 >
                   <X className="w-5 h-5" />
@@ -250,17 +250,17 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
               </div>
 
               {/* Chat messages */}
-              <div className="p-3 overflow-y-auto space-y-2.5 h-64 bg-stone-50 text-xs">
+              <div className="p-3 overflow-y-auto space-y-2.5 h-64 bg-[#fbf7f0] text-xs font-literary">
                 {messages.map((m, idx) => (
                   <div
                     key={idx}
                     className={`flex flex-col ${m.sender === 'user' ? 'items-end' : 'items-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-2xl px-3 py-2 ${
+                      className={`max-w-[85%] rounded-2xl px-3.5 py-2 ${
                         m.sender === 'user'
-                          ? 'bg-[#0084ff] text-white rounded-tr-none'
-                          : 'bg-white text-stone-800 shadow-xs border border-stone-200 rounded-tl-none'
+                          ? 'bg-[#991b1b] text-amber-50 rounded-tr-none shadow-xs'
+                          : 'bg-[#fffdfa] text-stone-800 shadow-xs border border-amber-200/80 rounded-tl-none'
                       }`}
                     >
                       {m.text}
@@ -271,17 +271,17 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
               </div>
 
               {/* Chat input */}
-              <form onSubmit={handleSendMessage} className="p-2.5 bg-white border-t border-stone-200 flex items-center gap-2">
+              <form onSubmit={handleSendMessage} className="p-3 bg-[#fffdfa] border-t border-amber-200 flex items-center gap-2">
                 <input
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
-                  placeholder="Nhập tin nhắn..."
-                  className="flex-1 bg-stone-100 rounded-full px-3.5 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  placeholder="Nhắn tin với quán Cô Hân..."
+                  className="flex-1 bg-[#fbf7f0] border border-amber-200 rounded-full px-3.5 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#991b1b]"
                 />
                 <button
                   type="submit"
-                  className="w-8 h-8 rounded-full bg-[#0084ff] text-white flex items-center justify-center hover:bg-[#0074e4] transition shrink-0 cursor-pointer"
+                  className="w-8 h-8 rounded-full bg-[#991b1b] text-amber-100 flex items-center justify-center hover:bg-[#7f1d1d] transition shrink-0 cursor-pointer border border-amber-400/40"
                   aria-label="Gửi tin nhắn"
                 >
                   <Send className="w-3.5 h-3.5" />

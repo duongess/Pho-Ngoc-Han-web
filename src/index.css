@@ -5,7 +5,61 @@
     scroll-behavior: smooth;
     scroll-padding-top: 130px;
     font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    background-color: #faf7f2;
+    color: #261e19;
   }
+}
+
+.font-calligraphy {
+  font-family: 'Charm', 'Alex Brush', cursive;
+}
+
+.font-literary {
+  font-family: 'Lora', 'Times New Roman', Georgia, serif;
+}
+
+.font-serif {
+  font-family: 'Playfair Display', 'Times New Roman', Georgia, serif;
+}
+
+.font-sans {
+  font-family: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+}
+
+/* Artistic Traditional Vietnamese Elements */
+.seal-stamp {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #b91c1c;
+  outline: 1px solid #dc2626;
+  outline-offset: 1px;
+  background-color: #991b1b;
+  color: #fef08a;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'Charm', cursive;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 6px -1px rgba(153, 27, 27, 0.35);
+}
+
+.gold-gradient-text {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 50%, #92400e 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-foil-border {
+  border-image: linear-gradient(to bottom right, #fef08a, #d97706, #78350f) 1;
+}
+
+.lacquer-surface {
+  background: linear-gradient(145deg, #1c1917 0%, #291b17 50%, #171412 100%);
+  border: 1px solid rgba(217, 119, 6, 0.25);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(254, 240, 138, 0.1);
 }
 
 @keyframes fadeIn {
@@ -36,21 +90,22 @@
   animation: slideLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Custom subtle scrollbar */
+/* Custom subtle scrollbar in warm antique bronze */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #f1ede6;
+  background: #f4ede2;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #d4a373;
+  background: #b48a5c;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #c65f0a;
+  background: #881337;
 }
+

@@ -127,19 +127,29 @@ export const VideoSection: React.FC = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-8 sm:mb-12"
+        className="text-center mb-10 sm:mb-14"
       >
-        <div className="inline-flex items-center justify-center gap-3">
-          <span className="w-10 sm:w-16 h-[2px] bg-[#d96b0c]/60" />
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-black tracking-wide text-[#c65f0a]">
-            Videos
-          </h2>
-          <span className="w-10 sm:w-16 h-[2px] bg-[#d96b0c]/60" />
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#fbf7f0] border border-amber-300/80 shadow-xs mb-3">
+          <span className="seal-stamp text-[10px] py-0.5 px-1.5">THƯỚC PHIM</span>
+          <span className="font-serif font-semibold text-xs tracking-widest text-[#7f1d1d] uppercase">
+            Hương Vị Qua Từng Khung Hình
+          </span>
         </div>
-        <p className="text-xs sm:text-sm text-stone-600 mt-1.5 font-sans italic flex items-center justify-center gap-1.5">
-          <Sparkles className="w-3.5 h-3.5 text-[#d96b0c]" />
-          <span>Khám phá không gian và cảm nhận từ thực khách cùng các nhà sáng tạo nội dung</span>
+
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-wide text-[#7f1d1d]">
+          Góc Phim Phở Ngọc Hân
+        </h2>
+
+        <p className="font-calligraphy text-2xl sm:text-3xl text-[#b45309] mt-2 font-normal">
+          Thực khách và học trò ghi lại những khoảnh khắc ấm lòng
         </p>
+
+        {/* Traditional Brass / Gold Motif Divider */}
+        <div className="flex items-center justify-center gap-3 my-3">
+          <span className="w-12 sm:w-20 h-px bg-gradient-to-r from-transparent to-[#b45309]/80" />
+          <span className="text-[#b45309] text-xs tracking-widest">❖ ✦ ❖</span>
+          <span className="w-12 sm:w-20 h-px bg-gradient-to-l from-transparent to-[#b45309]/80" />
+        </div>
       </motion.div>
 
       {/* Smooth Sliding Carousel Container */}
@@ -209,7 +219,7 @@ export const VideoSection: React.FC = () => {
                   <div
                     className={`relative aspect-video w-full rounded-2xl overflow-hidden bg-black transition-all duration-500 ${
                       isActive
-                        ? 'shadow-2xl ring-4 ring-[#d96b0c]/80 cursor-default'
+                        ? 'shadow-2xl ring-4 ring-[#b45309] cursor-default'
                         : 'shadow-lg hover:shadow-xl hover:opacity-90 cursor-pointer ring-1 ring-black/10'
                     }`}
                   >
@@ -237,10 +247,10 @@ export const VideoSection: React.FC = () => {
                             }}
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.95 }}
-                            className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-2xl transition cursor-pointer border-2 border-white/90"
+                            className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-white flex items-center justify-center shadow-2xl transition cursor-pointer border-2 border-amber-300"
                             aria-label="Xem video"
                           >
-                            <Play className="w-8 h-8 fill-current ml-1" />
+                            <Play className="w-8 h-8 fill-current ml-1 text-amber-200" />
                           </motion.button>
                         </>
                       ) : (
@@ -253,11 +263,11 @@ export const VideoSection: React.FC = () => {
                     {/* Bottom Metadata Bar inside Card */}
                     <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 text-white flex items-end justify-between gap-3 pointer-events-none">
                       <div className="min-w-0">
-                        <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] bg-red-600 px-2 py-0.5 rounded font-bold uppercase tracking-wider shadow-sm">
+                        <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] bg-[#991b1b] text-amber-100 border border-amber-400/40 px-2 py-0.5 rounded font-serif font-bold uppercase tracking-wider shadow-sm">
                           <Film className="w-3 h-3" />
-                          {video.videoUrl?.includes('/shorts/') ? 'YouTube Shorts' : 'Nét Huế TV'}
+                          {video.videoUrl?.includes('/shorts/') ? 'YouTube Shorts' : 'Phở Ngọc Hân'}
                         </span>
-                        <p className="text-xs sm:text-sm md:text-base font-bold mt-1 line-clamp-1 drop-shadow-md text-white">
+                        <p className="text-xs sm:text-sm md:text-base font-serif font-bold mt-1 line-clamp-1 drop-shadow-md text-white">
                           {video.title}
                         </p>
                       </div>
@@ -305,21 +315,21 @@ export const VideoSection: React.FC = () => {
               }}
               className="space-y-1.5 w-full"
             >
-              <h3 className="text-base sm:text-lg md:text-xl font-serif font-bold text-amber-950 leading-snug">
+              <h3 className="text-base sm:text-lg md:text-xl font-serif font-black text-[#7f1d1d] leading-snug">
                 {currentVideo.title}
               </h3>
               <p className="text-xs sm:text-sm text-stone-600 flex flex-wrap items-center justify-center gap-3">
-                <span className="flex items-center gap-1">
-                  <Eye className="w-3.5 h-3.5 text-[#d96b0c]" />
-                  <strong className="font-semibold text-stone-800">{currentVideo.views}</strong>
+                <span className="flex items-center gap-1 font-serif">
+                  <Eye className="w-3.5 h-3.5 text-[#991b1b]" />
+                  <strong className="font-bold text-stone-800">{currentVideo.views}</strong>
                 </span>
                 <span className="text-stone-300">•</span>
-                <span className="font-medium text-amber-800 flex items-center gap-1">
+                <span className="font-serif font-medium text-amber-900 flex items-center gap-1">
                   <Youtube className="w-3.5 h-3.5 text-red-600" />
                   {currentVideo.channel}
                 </span>
                 <span className="text-stone-300">•</span>
-                <span className="text-stone-500">Thời lượng: {currentVideo.duration}</span>
+                <span className="text-stone-500 font-serif">Thời lượng: {currentVideo.duration}</span>
               </p>
             </motion.div>
           </AnimatePresence>
@@ -340,7 +350,7 @@ export const VideoSection: React.FC = () => {
                 <div
                   className={`h-2 rounded-full transition-all duration-400 ${
                     isActive
-                      ? 'w-9 bg-[#d96b0c] shadow-sm shadow-[#d96b0c]/50'
+                      ? 'w-9 bg-[#991b1b] shadow-sm shadow-[#991b1b]/50'
                       : 'w-2.5 bg-stone-300 group-hover:bg-stone-400 group-hover:w-4'
                   }`}
                 />
@@ -392,17 +402,17 @@ export const VideoSection: React.FC = () => {
               <div className="p-4 bg-stone-900 text-stone-100 flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <h4 className="font-bold text-sm sm:text-base font-serif text-amber-200 truncate">{currentVideo.title}</h4>
-                  <p className="text-xs text-stone-400 mt-0.5">Nhà hàng Nét Huế - Tinh hoa ẩm thực Huế trứ danh</p>
+                  <p className="text-xs text-stone-400 mt-0.5">Phở Ngọc Hân - Cô giáo Đại học Xây Dựng về hưu</p>
                 </div>
                 {currentVideo.videoUrl && (
                   <a
                     href={currentVideo.videoUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition shrink-0 shadow"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100 text-xs font-serif font-bold transition shrink-0 shadow border border-amber-400/40"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Mở link</span>
+                    <span>Mở xem</span>
                   </a>
                 )}
               </div>

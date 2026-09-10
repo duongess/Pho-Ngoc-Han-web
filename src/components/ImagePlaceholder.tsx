@@ -12,7 +12,7 @@ interface ImagePlaceholderProps {
 
 export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
   src,
-  alt = 'Hình ảnh món ăn Nét Huế',
+  alt = 'Hình ảnh món ăn Phở Ngọc Hân',
   className = '',
   category,
   aspectRatio = 'square',
@@ -42,7 +42,7 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
         
         <div className="relative z-10 flex flex-col items-center p-3 text-center">
           <div className="w-10 h-10 rounded-full bg-amber-200/60 flex items-center justify-center mb-1.5 shadow-xs border border-amber-300/60">
-            {category?.includes('bun') || category?.includes('chao') ? (
+            {category?.includes('pho') || category?.includes('bun') ? (
               <Soup className="w-5 h-5 text-amber-700" />
             ) : (
               <Utensils className="w-5 h-5 text-amber-700" />
@@ -54,7 +54,7 @@ export const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({
                 {alt}
               </span>
               <span className="text-[10px] text-amber-700/70 tracking-wider uppercase mt-0.5">
-                Nét Huế
+                Phở Ngọc Hân
               </span>
             </>
           )}

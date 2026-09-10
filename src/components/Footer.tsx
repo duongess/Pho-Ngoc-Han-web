@@ -1,160 +1,154 @@
 import React from 'react';
-import { MapPin, Phone, Mail, Globe, Facebook, Twitter, Youtube } from 'lucide-react';
+import { MapPin, Phone, Mail, Globe, Facebook, Twitter, Youtube, Heart, GraduationCap } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
-    <footer id="lien-he" className="bg-[#141210] text-stone-300 pt-12 pb-8 border-t-2 border-amber-900/50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <footer id="lien-he" className="bg-gradient-to-b from-[#1a0f0f] via-[#140b0b] to-[#0d0707] text-stone-300 pt-16 pb-10 border-t-2 border-amber-600/40 relative overflow-hidden">
+      {/* Decorative subtle pattern overlay */}
+      <div className="absolute inset-0 opacity-5 pointer-events-none bg-[radial-gradient(#d4af37_1px,transparent_1px)] [background-size:20px_20px]" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Main 4 Columns Grid matching Screenshot 5 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-10 border-b border-stone-800">
+        {/* Main 4 Columns Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 pb-12 border-b border-amber-900/30">
           
-          {/* Col 1: Brand Logo & Short Intro (3 cols) */}
-          <div className="lg:col-span-3 space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-amber-950/80 border border-amber-400 flex items-center justify-center p-1.5">
-                <svg viewBox="0 0 48 48" fill="none" className="w-7 h-7 text-amber-300" stroke="currentColor">
-                  <path d="M6 22C6 34 16 40 24 40C32 40 42 34 42 22H6Z" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fill="#b45309" />
-                  <path d="M14 40L10 44H38L34 40" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M18 14C18 10 20 8 20 6" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M24 14C24 9 26 7 26 5" strokeWidth="2.5" strokeLinecap="round" />
-                  <path d="M30 14C30 10 32 8 32 6" strokeWidth="2.5" strokeLinecap="round" />
-                </svg>
+          {/* Col 1: Brand Logo & Short Intro (4 cols) */}
+          <div className="lg:col-span-4 space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-[#7f1d1d] to-[#991b1b] border-2 border-amber-400/80 overflow-hidden flex items-center justify-center p-1 shadow-lg shadow-black/60">
+                <img
+                  src="/pho_ngoc_han_logo.svg"
+                  alt="Logo Phở Ngọc Hân"
+                  className="w-full h-full object-cover rounded-full"
+                />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-serif font-black text-amber-300 tracking-wider">
-                  Nét Huế
-                </span>
-                <span className="text-xs font-serif italic text-amber-400 tracking-widest">
-                  Tinh hoa ẩm thực Huế
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl sm:text-3xl font-serif font-black gold-gradient-text tracking-wide">
+                    Phở Ngọc Hân
+                  </span>
+                  <span className="seal-stamp text-[9px] py-0.5 px-1.5 hidden sm:inline-block">GIA TRUYỀN</span>
+                </div>
+                <span className="text-xs font-calligraphy text-amber-400/90 tracking-widest text-sm">
+                  Đượm vị thanh tao • Gói trọn tình cô giáo
                 </span>
               </div>
             </div>
 
-            <p className="text-xs text-stone-400 leading-relaxed pt-2">
-              Nhà hàng Nét Huế gìn giữ và lan tỏa những giá trị ẩm thực tinh túy từ Cố Đô Huế đến người yêu ẩm thực Hà Thành.
+            <p className="text-xs text-stone-400 leading-relaxed pt-2 font-literary">
+              Khởi nguồn từ tình yêu ẩm thực và cái tâm của cô giáo Đại học Xây Dựng về hưu, Phở Ngọc Hân gìn giữ nồi nước dùng ninh xương ống bò 18 tiếng ngọt thanh nguyên bản, trao gửi trọn vẹn phong vị Hà Thành xưa.
             </p>
+
+            <div className="flex items-center gap-2 text-xs text-amber-300 font-serif bg-amber-950/40 p-2.5 rounded-xl border border-amber-900/50">
+              <GraduationCap className="w-4 h-4 text-amber-400 shrink-0" />
+              <span>Góc hẹn thân thương kề bên cổng Trường Đại học Xây Dựng Hà Nội</span>
+            </div>
           </div>
 
-          {/* Col 2: Thông tin liên hệ matching Screenshot 5 (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm sm:text-base font-serif font-bold text-amber-400 uppercase tracking-wide">
+          {/* Col 2: Thông tin liên hệ (3 cols) */}
+          <div className="lg:col-span-3 space-y-3.5">
+            <h4 className="text-sm sm:text-base font-serif font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
               Thông tin liên hệ
             </h4>
-            <ul className="space-y-2.5 text-xs text-stone-300">
-              <li className="flex items-start gap-2">
-                <MapPin className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>Tầng 4 số 34 - 36 Thái Hà, Hà Nội</span>
+            <ul className="space-y-3 text-xs text-stone-300 font-literary">
+              <li className="flex items-start gap-2.5">
+                <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                <span>Số 55 Giải Phóng, Hai Bà Trưng, Hà Nội (Cạnh cổng ĐH Xây Dựng)</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Phone className="w-4 h-4 text-amber-500 shrink-0" />
+              <li className="flex items-center gap-2.5">
+                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
                 <div>
-                  <span>Điện thoại: 0968 296433</span>
+                  <span>Điện thoại: <strong>0988 567 899</strong></span>
                   <br />
-                  <span>Hotline: <strong className="text-white font-bold">19009077</strong></span>
+                  <span className="text-amber-300/80">Hotline đặt phở: <strong className="text-amber-200">1900 9077</strong></span>
                 </div>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail className="w-4 h-4 text-amber-500 shrink-0" />
-                <span>nhahangnethue@gmail.com</span>
+              <li className="flex items-center gap-2.5">
+                <Mail className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>phongochan.xaydung@gmail.com</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Globe className="w-4 h-4 text-amber-500 shrink-0" />
-                <span>Website: nethue.com.vn</span>
+              <li className="flex items-center gap-2.5">
+                <Globe className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>Website: phongochan.com</span>
               </li>
             </ul>
           </div>
 
-          {/* Col 3: Tin tức nổi bật & Chính sách matching Screenshot 5 (3 cols) */}
-          <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm sm:text-base font-serif font-bold text-amber-400 uppercase tracking-wide">
-              Có thể bạn quan tâm
+          {/* Col 3: Có thể bạn quan tâm (2 cols) */}
+          <div className="lg:col-span-2 space-y-3.5">
+            <h4 className="text-sm sm:text-base font-serif font-bold text-amber-300 uppercase tracking-widest flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+              Góc ẩm thực
             </h4>
-            <ul className="space-y-1.5 text-xs text-stone-400">
+            <ul className="space-y-2 text-xs text-stone-400 font-literary">
               <li>
-                <a href="#dat-tiec" className="hover:text-amber-300 transition">Nhóm đông đặt tiệc</a>
+                <a href="#thuc-don" className="hover:text-amber-300 transition">Phở bò tái lăn & phở gà</a>
               </li>
               <li>
-                <a href="#dat-mon-tan-nha" className="hover:text-amber-300 transition">Đặt món phục vụ tại nhà</a>
+                <a href="#thuc-don" className="hover:text-amber-300 transition">Phở cuốn & phở xào giòn</a>
               </li>
               <li>
-                <a href="#gia" className="hover:text-amber-300 transition">Thông tin về giá sản phẩm</a>
+                <a href="#gioi-thieu" className="hover:text-amber-300 transition">Chuyện cô giáo Xây Dựng</a>
               </li>
               <li>
-                <a href="#chinh-sach-doi-tra" className="hover:text-amber-300 transition">Chính sách đổi trả</a>
+                <a href="#he-thong-cua-hang" className="hover:text-amber-300 transition">Hệ thống cơ sở quán</a>
               </li>
               <li>
-                <a href="#chinh-sach-thanh-toan" className="hover:text-amber-300 transition">Chính sách thanh toán</a>
+                <a href="#uu-dai" className="hover:text-amber-300 transition">Ưu đãi sinh viên & thầy cô</a>
               </li>
               <li>
-                <a href="#chinh-sach-van-chuyen" className="hover:text-amber-300 transition">Chính sách vận chuyển</a>
-              </li>
-              <li>
-                <a href="#chinh-sach-kiem-hang" className="hover:text-amber-300 transition">Chính sách kiểm hàng</a>
-              </li>
-              <li>
-                <a href="#chinh-sach-bao-mat" className="hover:text-amber-300 transition">Chính sách bảo mật</a>
-              </li>
-              <li>
-                <a href="#chinh-sach-quy-dinh" className="hover:text-amber-300 transition">Chính sách quy định</a>
+                <a href="#dat-mon" className="hover:text-amber-300 transition">Giao phở nóng tận nơi</a>
               </li>
             </ul>
           </div>
 
-          {/* Col 4: Fanpage & Mạng xã hội matching Screenshot 5 (3 cols) */}
+          {/* Col 4: Fanpage & Mạng xã hội (3 cols) */}
           <div className="lg:col-span-3 space-y-4">
-            {/* Fanpage Card Simulation */}
-            <div className="bg-white text-stone-900 rounded-lg p-3 shadow-md border border-stone-200">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full bg-amber-600 text-white font-serif font-bold text-xs flex items-center justify-center">
+            {/* Fanpage Card */}
+            <div className="bg-[#fffdfa] text-stone-900 rounded-2xl p-3.5 shadow-xl border-2 border-amber-400/60">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 rounded-full bg-gradient-to-tr from-[#7f1d1d] to-[#991b1b] text-amber-200 font-serif font-bold text-xs flex items-center justify-center border border-amber-300">
                   NH
                 </div>
                 <div>
-                  <h5 className="text-xs font-bold leading-tight">Nhà Hàng Nét Huế</h5>
-                  <span className="text-[10px] text-stone-500">30.605 người theo dõi</span>
+                  <h5 className="text-xs font-serif font-bold leading-tight text-[#7f1d1d]">Phở Ngọc Hân - ĐH Xây Dựng</h5>
+                  <span className="text-[10px] text-stone-500 font-literary">Hơn 45.000 thực khách mến mộ</span>
                 </div>
               </div>
-              <div className="mt-2 pt-2 border-t border-stone-100 flex items-center justify-between">
+              <div className="mt-2.5 pt-2.5 border-t border-stone-200 flex items-center justify-between">
                 <a
                   href="https://facebook.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="bg-[#1877f2] hover:bg-[#166fe5] text-white px-3 py-1 rounded text-[11px] font-semibold flex items-center gap-1 transition"
+                  className="bg-[#1877f2] hover:bg-[#166fe5] text-white px-3.5 py-1.5 rounded-full text-[11px] font-serif font-semibold flex items-center gap-1.5 transition shadow-xs"
                 >
-                  <Facebook className="w-3 h-3" /> Theo dõi trang
+                  <Facebook className="w-3 h-3" /> Ghé thăm trang
                 </a>
+                <span className="seal-stamp text-[8px] py-0.5 px-1.5">CHÍNH HÃNG</span>
               </div>
             </div>
 
-            {/* Social Icons matching Screenshot 5 */}
+            {/* Social Icons */}
             <div>
-              <h4 className="text-xs font-serif font-bold text-amber-400 uppercase tracking-wider mb-2">
-                Mạng xã hội
+              <h4 className="text-xs font-serif font-bold text-amber-300 uppercase tracking-widest mb-2.5">
+                Mạng xã hội & Đánh giá
               </h4>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <a
                   href="https://facebook.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white text-stone-900 hover:bg-amber-400 hover:text-stone-900 flex items-center justify-center transition"
+                  className="w-9 h-9 rounded-full bg-[#2a1717] border border-amber-500/40 text-amber-200 hover:bg-[#991b1b] hover:text-amber-100 flex items-center justify-center transition shadow-sm"
                   aria-label="Facebook"
                 >
                   <Facebook className="w-4 h-4" />
                 </a>
                 <a
-                  href="https://twitter.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white text-stone-900 hover:bg-amber-400 hover:text-stone-900 flex items-center justify-center transition"
-                  aria-label="Twitter"
-                >
-                  <Twitter className="w-4 h-4" />
-                </a>
-                <a
                   href="https://youtube.com"
                   target="_blank"
                   rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white text-stone-900 hover:bg-amber-400 hover:text-stone-900 flex items-center justify-center transition"
+                  className="w-9 h-9 rounded-full bg-[#2a1717] border border-amber-500/40 text-amber-200 hover:bg-[#991b1b] hover:text-amber-100 flex items-center justify-center transition shadow-sm"
                   aria-label="YouTube"
                 >
                   <Youtube className="w-4 h-4" />
@@ -163,37 +157,27 @@ export const Footer: React.FC = () => {
                   href="https://zalo.me"
                   target="_blank"
                   rel="noreferrer"
-                  className="w-8 h-8 rounded-full bg-white text-blue-700 font-bold text-xs flex items-center justify-center hover:bg-amber-400 hover:text-stone-900 transition"
+                  className="w-9 h-9 rounded-full bg-[#2a1717] border border-amber-500/40 text-amber-200 font-serif font-bold text-xs flex items-center justify-center hover:bg-[#991b1b] hover:text-amber-100 transition shadow-sm"
                   aria-label="Zalo"
                 >
-                  Z
+                  Zalo
                 </a>
-              </div>
-            </div>
-
-            {/* Gia Thành Partner Badge matching Screenshot 5 */}
-            <div className="bg-white rounded-md p-2 w-fit border border-stone-300">
-              <div className="text-[10px] font-black tracking-tighter text-amber-800 leading-tight">
-                GIA THÀNH
-              </div>
-              <div className="text-[8px] text-stone-500 tracking-tight">
-                Hủ tiếu • Bánh canh
               </div>
             </div>
           </div>
 
         </div>
 
-        {/* Bottom Legal / Copyright matching Screenshot 5 */}
-        <div className="pt-6 text-center text-xs text-stone-500 space-y-1 font-light">
-          <p className="font-medium text-stone-400">
-            CÔNG TY TNHH SẢN XUẤT VÀ DỊCH VỤ GIA THÀNH
+        {/* Bottom Legal / Copyright */}
+        <div className="pt-8 text-center text-xs text-stone-500 space-y-1.5 font-literary">
+          <p className="font-serif font-bold text-amber-400 tracking-wider">
+            QUÁN PHỞ NGỌC HÂN — CÔ GIÁO ĐẠI HỌC XÂY DỰNG
           </p>
-          <p>
-            GPKD số 0105380594 do Sở KHĐT Hà Nội cấp ngày 06/07/2011 • Đại diện: Nhà hàng Nét Huế
+          <p className="text-stone-400">
+            Địa chỉ: 55 Giải Phóng, P. Đồng Tâm, Q. Hai Bà Trưng, TP. Hà Nội • Hotline đặt phở: 0988 567 899
           </p>
-          <p className="text-[11px] text-stone-600">
-            © {new Date().getFullYear()} Nét Huế. Tinh hoa ẩm thực Huế. Tất cả quyền được bảo lưu.
+          <p className="text-[11px] text-stone-500 font-serif italic">
+            © {new Date().getFullYear()} Phở Ngọc Hân. Tinh hoa phở truyền thống đất Hà Thành. Gói trọn tâm tình trong từng bát phở.
           </p>
         </div>
 

@@ -10,7 +10,7 @@ export const StoreLocator: React.FC = () => {
   const [activeBranch, setActiveBranch] = useState<StoreBranch | null>(STORE_BRANCHES[0]);
   const [locationToast, setLocationToast] = useState<string | null>(null);
 
-  const districts = ['all', 'Bắc Từ Liêm', 'Cầu Giấy', 'Hà Đông', 'Đống Đa', 'Hoàn Kiếm', 'Hai Bà Trưng'];
+  const districts = ['all', 'Hai Bà Trưng', 'Đống Đa'];
 
   const filteredBranches = STORE_BRANCHES.filter((branch) => {
     const matchesDistrict = selectedDistrict === 'all' || branch.district === selectedDistrict;
@@ -22,7 +22,7 @@ export const StoreLocator: React.FC = () => {
 
   const handleFindNearest = () => {
     setActiveBranch(STORE_BRANCHES[0]);
-    setLocationToast('Đã định vị thành công! Chi nhánh gần bạn nhất: Nét Huế - Bắc Từ Liêm');
+    setLocationToast('Đã định vị thành công! Chi nhánh gần bạn nhất: Phở Ngọc Hân - Cổng ĐH Xây Dựng (55 Giải Phóng)');
     setTimeout(() => {
       setLocationToast(null);
     }, 4000);
@@ -51,21 +51,29 @@ export const StoreLocator: React.FC = () => {
           transition={{ duration: 0.65, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-4xl mx-auto bg-[#faf8f4] rounded-2xl shadow-2xl overflow-hidden border-2 border-[#d96b0c]/40"
         >
-          {/* Header Bar: Amber background matching Screenshot 4 */}
-          <div className="bg-[#d96b0c] text-white px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md">
-            <h2 className="text-xl sm:text-2xl font-serif font-black tracking-wide uppercase">
-              Hệ thống nhà hàng
-            </h2>
+          {/* Header Bar: Lacquer Red & Gold Header */}
+          <div className="bg-gradient-to-r from-[#7f1d1d] via-[#991b1b] to-[#6b1414] text-amber-100 px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-md border-b-2 border-amber-400/40">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="seal-stamp text-[9px] py-0.5 px-1.5">ĐIỂM HẸN</span>
+                <h2 className="text-xl sm:text-2xl font-serif font-black tracking-wider uppercase text-amber-100">
+                  Hệ thống quán Phở Ngọc Hân
+                </h2>
+              </div>
+              <p className="text-xs text-amber-200/80 font-literary mt-0.5">
+                Kính mời quý khách, thầy cô và các bạn sinh viên ghé thưởng thức
+              </p>
+            </div>
 
             <motion.button
               id="find-nearest-btn"
               onClick={handleFindNearest}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="px-4 py-2 rounded-full bg-white text-[#d96b0c] hover:bg-amber-50 font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition cursor-pointer"
+              className="px-5 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-stone-900 font-serif font-bold text-xs sm:text-sm flex items-center gap-2 shadow-md transition cursor-pointer border border-amber-200"
             >
-              <MapPin className="w-4 h-4 text-[#d96b0c] animate-bounce" />
-              <span>Tìm nhà hàng gần nhất</span>
+              <MapPin className="w-4 h-4 text-[#7f1d1d] animate-bounce" />
+              <span>Tìm quán gần nhất</span>
             </motion.button>
           </div>
 
@@ -76,16 +84,16 @@ export const StoreLocator: React.FC = () => {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
-                className="bg-emerald-600 text-white text-xs sm:text-sm px-6 py-2.5 flex items-center gap-2 font-medium"
+                className="bg-emerald-800 text-amber-100 text-xs sm:text-sm px-6 py-2.5 flex items-center gap-2 font-literary border-b border-emerald-600"
               >
-                <CheckCircle2 className="w-4 h-4 text-emerald-200 shrink-0" />
+                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
                 <span>{locationToast}</span>
               </motion.div>
             )}
           </AnimatePresence>
 
           {/* District Filter Chips & Search */}
-          <div className="bg-stone-100/90 px-6 py-3 border-b border-stone-200 flex flex-wrap items-center justify-between gap-3">
+          <div className="bg-[#fbf7f0] px-6 py-3.5 border-b border-amber-200/80 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-1.5">
               {districts.map((d) => {
                 const isSelected = selectedDistrict === d;
@@ -93,16 +101,16 @@ export const StoreLocator: React.FC = () => {
                   <button
                     key={d}
                     onClick={() => setSelectedDistrict(d)}
-                    className={`relative px-3 py-1 rounded-full text-xs font-semibold transition cursor-pointer ${
+                    className={`relative px-3.5 py-1 rounded-full text-xs font-serif font-bold transition cursor-pointer ${
                       isSelected
-                        ? 'text-white'
-                        : 'bg-white text-stone-700 hover:bg-stone-200/80 border border-stone-300'
+                        ? 'text-amber-100'
+                        : 'bg-[#fffdfa] text-stone-700 hover:bg-amber-100/60 border border-amber-300/80'
                     }`}
                   >
                     {isSelected && (
                       <motion.span
                         layoutId="activeDistrictPill"
-                        className="absolute inset-0 bg-[#d96b0c] rounded-full shadow-xs"
+                        className="absolute inset-0 bg-[#7f1d1d] rounded-full shadow-xs"
                         transition={{ type: "spring", stiffness: 350, damping: 30 }}
                       />
                     )}
@@ -114,19 +122,19 @@ export const StoreLocator: React.FC = () => {
 
             {/* Quick Filter Search */}
             <div className="relative min-w-[200px]">
-              <Search className="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-2.5" />
+              <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-2.5" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Tìm đường, quận..."
-                className="w-full pl-8 pr-3 py-1.5 rounded-full bg-white border border-stone-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#d96b0c]/40"
+                placeholder="Tìm đường Giải Phóng, ĐH Xây Dựng..."
+                className="w-full pl-8 pr-3 py-1.5 rounded-full bg-[#fffdfa] border border-amber-300 text-xs focus:outline-none focus:ring-2 focus:ring-[#991b1b] font-literary"
               />
             </div>
           </div>
 
-          {/* Store Branches List matching Screenshot 4 & 5 */}
-          <div className="divide-y divide-stone-200/80 max-h-[460px] overflow-y-auto">
+          {/* Store Branches List */}
+          <div className="divide-y divide-amber-200/60 max-h-[460px] overflow-y-auto bg-[#fffdfa]">
             {filteredBranches.map((branch) => {
               const isActive = activeBranch?.id === branch.id;
               return (
@@ -134,17 +142,17 @@ export const StoreLocator: React.FC = () => {
                   key={branch.id}
                   id={`branch-${branch.id}`}
                   onClick={() => setActiveBranch(branch)}
-                  whileHover={{ backgroundColor: 'rgba(254, 243, 199, 0.5)' }}
-                  className={`p-5 transition cursor-pointer ${
-                    isActive ? 'bg-amber-50/90 border-l-4 border-[#d96b0c]' : ''
+                  whileHover={{ backgroundColor: 'rgba(251, 247, 240, 0.8)' }}
+                  className={`p-5 sm:p-6 transition cursor-pointer ${
+                    isActive ? 'bg-[#fbf7f0] border-l-4 border-[#991b1b]' : ''
                   }`}
                 >
                   <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
-                    <h3 className="font-bold text-base sm:text-lg text-amber-950 font-serif flex items-center gap-2">
+                    <h3 className="font-serif font-black text-base sm:text-lg text-[#7f1d1d] flex items-center gap-2">
                       <span>{branch.name}</span>
                       {isActive && (
-                        <span className="text-[10px] uppercase font-sans font-bold bg-[#d96b0c] text-white px-2 py-0.5 rounded-full">
-                          Đang chọn
+                        <span className="seal-stamp text-[9px] py-0.5 px-2">
+                          ĐANG CHỌN
                         </span>
                       )}
                     </h3>
@@ -154,35 +162,35 @@ export const StoreLocator: React.FC = () => {
                       )}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-1 text-xs font-bold text-[#d96b0c] hover:underline"
+                      className="inline-flex items-center gap-1 text-xs font-serif font-bold text-[#991b1b] hover:underline"
                       onClick={(e) => e.stopPropagation()}
                     >
-                      <Navigation className="w-3 h-3" />
-                      <span>Chỉ đường</span>
+                      <Navigation className="w-3.5 h-3.5 text-[#991b1b]" />
+                      <span>Chỉ đường bản đồ</span>
                     </a>
                   </div>
 
-                  <div className="mt-2 space-y-1.5 text-xs sm:text-sm text-stone-600">
+                  <div className="mt-2.5 space-y-1.5 text-xs sm:text-sm text-stone-700 font-literary">
                     <div className="flex items-start gap-2">
-                      <MapPin className="w-4 h-4 text-stone-500 shrink-0 mt-0.5" />
+                      <MapPin className="w-4 h-4 text-[#991b1b] shrink-0 mt-0.5" />
                       <span>{branch.address}</span>
                     </div>
 
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-1 pt-1">
+                    <div className="flex flex-wrap items-center gap-x-6 gap-y-1.5 pt-1.5">
                       <div className="flex items-center gap-2">
-                        <Phone className="w-3.5 h-3.5 text-stone-500" />
-                        <span>Hotline: <strong className="text-stone-900">{branch.hotline}</strong></span>
+                        <Phone className="w-3.5 h-3.5 text-amber-800" />
+                        <span>Hotline: <strong className="text-stone-900 font-serif">{branch.hotline}</strong></span>
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <Mail className="w-3.5 h-3.5 text-stone-500" />
+                        <Mail className="w-3.5 h-3.5 text-amber-800" />
                         <span>{branch.email}</span>
                       </div>
 
                       {branch.hours && (
-                        <div className="flex items-center gap-2 text-emerald-700 font-medium">
-                          <Clock className="w-3.5 h-3.5" />
-                          <span>Mở cửa: {branch.hours}</span>
+                        <div className="flex items-center gap-2 text-emerald-800 font-medium">
+                          <Clock className="w-3.5 h-3.5 text-emerald-700" />
+                          <span>Giờ bán: {branch.hours}</span>
                         </div>
                       )}
                     </div>
@@ -192,8 +200,8 @@ export const StoreLocator: React.FC = () => {
             })}
 
             {filteredBranches.length === 0 && (
-              <div className="p-8 text-center text-stone-500 text-xs sm:text-sm">
-                Không tìm thấy chi nhánh phù hợp với tìm kiếm của bạn.
+              <div className="p-8 text-center text-stone-500 text-xs sm:text-sm font-literary">
+                Không tìm thấy quán phù hợp với tìm kiếm của bạn.
               </div>
             )}
           </div>

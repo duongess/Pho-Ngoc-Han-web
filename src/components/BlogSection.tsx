@@ -9,31 +9,39 @@ export const BlogSection: React.FC = () => {
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
 
   return (
-    <section id="blog-am-thuc" className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Decorative Title matching Screenshot 4 */}
+    <section id="blog-am-thuc" className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+      {/* Decorative Title matching artistic theme */}
       <motion.div 
         initial={{ opacity: 0, y: 25 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.6 }}
-        className="text-center mb-10"
+        className="text-center mb-12"
       >
-        <div className="inline-flex items-center justify-center gap-3">
-          <span className="w-10 sm:w-16 h-[2px] bg-[#d96b0c]/60" />
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-black tracking-wide text-[#c65f0a]">
-            Blog ẩm thực
-          </h2>
-          <span className="w-10 sm:w-16 h-[2px] bg-[#d96b0c]/60" />
+        <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#fbf7f0] border border-amber-300/80 shadow-xs mb-3">
+          <span className="seal-stamp text-[10px] py-0.5 px-1.5">BÚT KÝ</span>
+          <span className="font-serif font-semibold text-xs tracking-widest text-[#7f1d1d] uppercase">
+            Chuyện Nghề & Ký Ức Hà Thành
+          </span>
         </div>
-        <p className="text-xs sm:text-sm text-stone-600 mt-2 font-sans">
-          Hãy cùng khám phá nét đẹp văn hoá và bí quyết gia truyền tạo nên hương vị Nét Huế
+
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-wide text-[#7f1d1d]">
+          Blog Ẩm Thực Phở
+        </h2>
+
+        <p className="font-calligraphy text-2xl sm:text-3xl text-[#b45309] mt-2 font-normal">
+          Ghi chép của cô giáo già về nồi nước dùng và tình nghĩa học trò
         </p>
-        <p className="text-xs text-amber-700 font-serif italic mt-0.5">
-          Nét Huế • Tinh hoa ẩm thực Huế
-        </p>
+
+        {/* Traditional Gold Motif Divider */}
+        <div className="flex items-center justify-center gap-3 my-3">
+          <span className="w-12 sm:w-20 h-px bg-gradient-to-r from-transparent to-[#b45309]/80" />
+          <span className="text-[#b45309] text-xs tracking-widest">❖ ✦ ❖</span>
+          <span className="w-12 sm:w-20 h-px bg-gradient-to-l from-transparent to-[#b45309]/80" />
+        </div>
       </motion.div>
 
-      {/* 3 Articles Grid with Staggered Entrance matching Screenshot 4 */}
+      {/* 3 Articles Grid with Staggered Entrance */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
         {BLOG_POSTS.map((post, index) => (
           <motion.article
@@ -46,44 +54,44 @@ export const BlogSection: React.FC = () => {
             transition={{ duration: 0.5, delay: index * 0.12 }}
             whileHover={{ 
               y: -8, 
-              boxShadow: "0 20px 25px -5px rgba(180, 83, 9, 0.12)",
+              boxShadow: "0 20px 30px -8px rgba(127, 29, 29, 0.15)",
               transition: { duration: 0.25 }
             }}
-            className="group bg-white rounded-2xl overflow-hidden shadow-xs border border-stone-200/80 flex flex-col cursor-pointer transition-colors hover:border-amber-300"
+            className="group bg-[#fffdfa] rounded-2xl overflow-hidden shadow-xs border border-amber-200/90 flex flex-col cursor-pointer transition-colors hover:border-[#991b1b]"
           >
             {/* Post Image with resilient placeholder */}
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-stone-100">
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-stone-100 border-b border-amber-200/60">
               <ImagePlaceholder
                 src={post.image}
                 alt={post.title}
                 aspectRatio="banner"
                 className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
               />
-              <span className="absolute top-3 left-3 bg-[#d96b0c] text-white text-[10px] font-bold px-2.5 py-1 rounded-md shadow-md">
+              <span className="absolute top-3 left-3 bg-[#7f1d1d] text-amber-100 border border-amber-400/50 text-[10px] font-serif font-bold px-3 py-1 rounded-full shadow-md">
                 {post.category}
               </span>
             </div>
 
             {/* Post Content */}
-            <div className="p-5 flex flex-col flex-grow">
-              <h3 className="text-base sm:text-lg font-bold text-stone-900 group-hover:text-[#c65f0a] transition-colors line-clamp-2">
+            <div className="p-6 flex flex-col flex-grow">
+              <h3 className="text-base sm:text-lg font-serif font-bold text-stone-900 group-hover:text-[#991b1b] transition-colors line-clamp-2">
                 {post.title}
               </h3>
 
               {/* Date */}
-              <div className="flex items-center gap-1.5 text-xs text-stone-500 my-2.5">
-                <Calendar className="w-3.5 h-3.5 text-amber-700" />
+              <div className="flex items-center gap-1.5 text-xs text-amber-800 font-literary my-2.5">
+                <Calendar className="w-3.5 h-3.5 text-[#991b1b]" />
                 <span>Ngày {post.date}</span>
               </div>
 
               {/* Excerpt */}
-              <p className="text-xs sm:text-sm text-stone-600 line-clamp-3 leading-relaxed">
+              <p className="text-xs sm:text-sm text-stone-600 line-clamp-3 leading-relaxed font-literary">
                 {post.excerpt}
               </p>
 
-              <div className="mt-4 pt-3 border-t border-stone-100 flex items-center text-xs font-bold text-[#d96b0c] group-hover:translate-x-1.5 transition-transform">
+              <div className="mt-4 pt-3 border-t border-amber-100 flex items-center text-xs font-serif font-bold text-[#991b1b] group-hover:translate-x-1.5 transition-transform">
                 <BookOpen className="w-3.5 h-3.5 mr-1" />
-                <span>Đọc bài viết</span>
+                <span>Đọc tâm sự</span>
                 <ArrowRight className="w-3.5 h-3.5 ml-1" />
               </div>
             </div>

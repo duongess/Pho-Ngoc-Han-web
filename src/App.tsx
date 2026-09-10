@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { HeroBanner } from './components/HeroBanner';
-import { MenuCategories } from './components/MenuCategories';
+import { BestsellerSection } from './components/BestsellerSection';
 import { FeaturedDishes } from './components/FeaturedDishes';
 import { BrandStory } from './components/BrandStory';
 import { VideoSection } from './components/VideoSection';
@@ -18,7 +18,6 @@ import { Dish, CartItem } from './types';
 
 export default function App() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
@@ -42,8 +41,8 @@ export default function App() {
   };
 
   const handleUpdateQuantity = (dishId: string, delta: number) => {
-    setCartItems((prev) => {
-      return prev
+    setCartItems((prev) =>
+      prev
         .map((item) => {
           if (item.dish.id === dishId) {
             const newQty = item.quantity + delta;
@@ -51,8 +50,8 @@ export default function App() {
           }
           return item;
         })
-        .filter(Boolean) as CartItem[];
-    });
+        .filter(Boolean) as CartItem[]
+    );
   };
 
   const handleRemoveItem = (dishId: string) => {
@@ -63,7 +62,7 @@ export default function App() {
     setCartItems([]);
   };
 
-  // Navigation smoothly scrolls to anchor sections
+  // Section navigation
   const handleNavigate = (sectionId: string) => {
     setActiveSection(sectionId);
     if (sectionId === 'trang-chu') {
@@ -79,7 +78,7 @@ export default function App() {
     } else if (sectionId === 'he-thong-cua-hang') {
       document.getElementById('he-thong-cua-hang')?.scrollIntoView({ behavior: 'smooth' });
     } else if (sectionId === 'tuyen-dung') {
-      alert('Nét Huế liên tục tuyển dụng Bếp trưởng, Phục vụ, Thu ngân. Vui lòng liên hệ hotline 19009077 hoặc gửi CV qua nhahangnethue@gmail.com!');
+      alert('Phở Ngọc Hân tuyển dụng nhân viên phụ bếp, chạy bàn, ưu tiên các bạn sinh viên ĐH Xây Dựng, Bách Khoa làm ca linh hoạt. Vui lòng liên hệ hotline 0988 567 899!');
     } else if (sectionId === 'lien-he') {
       document.getElementById('lien-he')?.scrollIntoView({ behavior: 'smooth' });
     }
@@ -89,7 +88,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f7f5f0] text-[#2c241e]">
-      {/* 1. Header Navigation matching Screenshot 1 */}
+      {/* 1. Header Navigation */}
       <Header
         cartCount={totalCartCount}
         onOpenCart={() => setIsCartOpen(true)}
@@ -101,7 +100,7 @@ export default function App() {
         onToggleLang={() => setCurrentLang((prev) => (prev === 'vi' ? 'en' : 'vi'))}
       />
 
-      {/* 2. Hero Promotion Banner matching Screenshot 1 */}
+      {/* 2. Hero Promotion Banner */}
       <main className="flex-1">
         <HeroBanner
           onOrderNow={() => {
@@ -109,40 +108,37 @@ export default function App() {
           }}
         />
 
-        {/* 3. Circular Menu Categories matching Screenshot 1 */}
-        <MenuCategories
-          selectedCategory={selectedCategory}
-          onSelectCategory={(catId) => {
-            setSelectedCategory(catId);
-            document.getElementById('thuc-don')?.scrollIntoView({ behavior: 'smooth' });
-          }}
-        />
-
-        {/* 4. Featured Dishes matching Screenshot 2 */}
-        <FeaturedDishes
-          dishes={DISHES}
-          selectedCategory={selectedCategory}
+        {/* 3. Top 3 Bestseller Dishes of Phở Ngọc Hân */}
+        <BestsellerSection
+          bestsellers={DISHES.filter((d) => d.isFeatured).slice(0, 3)}
           onAddToCart={(dish) => handleAddToCart(dish, 1)}
           onViewDish={(dish) => setSelectedDish(dish)}
         />
 
-        {/* 5. Brand Heritage & Story matching Screenshot 3 */}
+        {/* 4. Full Menu with All Dishes (no filters) */}
+        <FeaturedDishes
+          dishes={DISHES}
+          onAddToCart={(dish) => handleAddToCart(dish, 1)}
+          onViewDish={(dish) => setSelectedDish(dish)}
+        />
+
+        {/* 5. Brand Heritage & Story of Retired Civil Engineering Teacher */}
         <BrandStory />
 
-        {/* 6. Videos Carousel matching Screenshot 3 */}
+        {/* 6. Videos Carousel */}
         <VideoSection />
 
-        {/* 7. Blog Ẩm Thực matching Screenshot 4 */}
+        {/* 7. Blog Ẩm Thực & Chuyện Phở */}
         <BlogSection />
 
-        {/* 8. Hệ Thống Nhà Hàng matching Screenshot 4 & 5 */}
+        {/* 8. Hệ Thống Quán Phở Ngọc Hân */}
         <StoreLocator />
       </main>
 
-      {/* 9. Detailed Footer matching Screenshot 5 */}
+      {/* 9. Detailed Footer */}
       <Footer />
 
-      {/* Floating Action Badges & Support Chat matching all screenshots */}
+      {/* Floating Action Badges & Support Chat */}
       <FloatingWidgets
         onOpenReservation={() => setIsReservationOpen(true)}
         onScrollToStores={() => {
@@ -159,11 +155,10 @@ export default function App() {
         onUpdateQuantity={handleUpdateQuantity}
         onRemoveItem={handleRemoveItem}
         onClearCart={handleClearCart}
-      />
-
-      <ReservationModal
-        isOpen={isReservationOpen}
-        onClose={() => setIsReservationOpen(false)}
+        onCheckout={() => {
+          setIsCartOpen(false);
+          setIsReservationOpen(true);
+        }}
       />
 
       <SearchModal
@@ -172,6 +167,11 @@ export default function App() {
         dishes={DISHES}
         onAddToCart={(dish) => handleAddToCart(dish, 1)}
         onViewDish={(dish) => setSelectedDish(dish)}
+      />
+
+      <ReservationModal
+        isOpen={isReservationOpen}
+        onClose={() => setIsReservationOpen(false)}
       />
 
       <DishDetailModal

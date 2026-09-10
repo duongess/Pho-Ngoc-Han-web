@@ -1,6 +1,6 @@
 {
-  "name": "Nét Huế - Tinh Hoa Ẩm Thực Huế",
-  "description": "Website nhà hàng Nét Huế - Tinh hoa ẩm thực Huế, đặt món mang về, đặt bàn tiệc và khám phá thực đơn đặc sản cố đô.",
+  "name": "Phở Ngọc Hân - Tinh Hoa Phở Truyền Thống",
+  "description": "Quán Phở Ngọc Hân - Nồi phở gia truyền của cô giáo Đại học Xây Dựng về hưu, chuyên các món phở bò tái chín, gầu gân, phở gà ta, phở cuốn, phở xào đậm đà chuẩn vị.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
