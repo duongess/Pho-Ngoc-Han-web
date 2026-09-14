@@ -123,7 +123,6 @@ export default function App() {
         />
 
         {/* 5. Brand Heritage & Story of Retired Civil Engineering Teacher */}
-        <BrandStory />
 
         {/* 6. Videos Carousel */}
         <VideoSection />

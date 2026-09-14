@@ -59,9 +59,8 @@ export const Header: React.FC<HeaderProps> = ({
 
   const navItems = [
     { id: 'trang-chu', label: currentLang === 'vi' ? 'TRANG CHỦ' : 'HOME' },
-    { id: 'gioi-thieu', label: currentLang === 'vi' ? 'GIỚI THIỆU' : 'ABOUT US' },
+    // { id: 'gioi-thieu', label: currentLang === 'vi' ? 'GIỚI THIỆU' : 'ABOUT US' },
     { id: 'thuc-don', label: currentLang === 'vi' ? 'THỰC ĐƠN' : 'MENU' },
-    { id: 'uu-dai', label: currentLang === 'vi' ? 'ƯU ĐÃI' : 'DEALS' },
     { id: 'blog-am-thuc', label: currentLang === 'vi' ? 'BLOG ẨM THỰC' : 'BLOG' },
     { id: 'he-thong-cua-hang', label: currentLang === 'vi' ? 'HỆ THỐNG CỬA HÀNG' : 'LOCATIONS' },
     { id: 'tuyen-dung', label: currentLang === 'vi' ? 'TUYỂN DỤNG' : 'CAREERS' },
@@ -76,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({
   const currentAnnouncement = announcements[tickerIndex];
 
   return (
-    <header className="sticky top-0 z-40 w-full select-none shadow-md transition-shadow duration-300">
+    <header className="sticky top-0 z-40 w-full select-none shadow-md transition-shadow duration-300 ">
       {/* Top Fixed Scroll Progress Indicator */}
       <div className="absolute top-0 left-0 right-0 h-1 z-50 bg-black/10 pointer-events-none">
         <motion.div
@@ -87,14 +86,14 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Top Announcement Bar with Rotating Text Transition Effect */}
       <div 
-        className={`bg-[#181311] text-amber-100/90 text-xs px-4 overflow-hidden border-b border-amber-900/40 transition-all duration-300 ${
+        className={`bg-[#181311]/90 backdrop-blur-md text-amber-100/90 text-xs px-4 overflow-hidden border-b border-amber-900/40 transition-all duration-300 ${
           isScrolled ? 'py-1 sm:py-1.5' : 'py-1.5'
         }`}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-2.5 overflow-hidden flex-1">
             <span className="seal-stamp text-[10px] py-0.5 px-1.5 tracking-normal shrink-0">
-              CÔ HÂN
+              PHỞ NGỌC HÂN
             </span>
             <div className="relative h-5 overflow-hidden flex-1">
               <AnimatePresence mode="wait">
@@ -123,15 +122,17 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       {/* Main Navigation Row & Brand Identity */}
-      <div className={`w-full bg-gradient-to-r from-[#6b1414] via-[#881337] to-[#7f1d1d] text-white transition-all duration-300 border-b border-amber-500/20 shadow-md ${
-        isScrolled ? 'shadow-xl backdrop-blur-md bg-opacity-95' : ''
+      <div className={`w-full text-white transition-all duration-300 border-b border-amber-500/20 backdrop-blur-md ${
+        isScrolled 
+          ? 'bg-gradient-to-r from-[#6b1414]/80 via-[#881337]/80 to-[#7f1d1d]/80 shadow-xl' 
+          : 'bg-gradient-to-r from-[#6b1414]/85 via-[#881337]/85 to-[#7f1d1d]/85 shadow-md'
       }`}>
         {/* Top Banner Row */}
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between border-b border-amber-200/10 transition-all duration-300 ${
-          isScrolled ? 'py-2 sm:py-2.5' : 'py-3'
+        <div className={`max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 flex items-center justify-between border-b border-amber-200/10 transition-all duration-300 ${
+          isScrolled ? 'py-1.5 sm:py-2.5' : 'py-2 sm:py-3'
         }`}>
-          {/* Left: Language Toggle */}
-          <div className="flex items-center gap-2">
+          {/* Left: Language Toggle (Desktop only, mobile moved into Menu) */}
+          <div className="hidden sm:flex items-center gap-2">
             <button
               id="lang-toggle-btn"
               onClick={onToggleLang}
@@ -146,39 +147,37 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Center: Phở Ngọc Hân Brand Logo with Seal */}
           <div 
             onClick={() => handleNavClick('trang-chu')} 
-            className="cursor-pointer flex flex-col items-center group text-center py-0.5"
+            className="cursor-pointer flex items-center group py-1 gap-2.5 sm:gap-3.5 text-left"
           >
-            <div className="flex items-center gap-2.5">
-              {/* Traditional Bowl Stylized Emblem with Gold Ring */}
-              <div className={`rounded-full bg-amber-950/70 border-2 border-amber-400/80 p-0.5 flex items-center justify-center shadow-lg group-hover:border-amber-300 transition-all duration-300 ${
-                isScrolled ? 'w-8 h-8' : 'w-10 h-10'
-              }`}>
-                <img
-                  src="/pho_ngoc_han_logo.svg"
-                  alt="Logo Phở Ngọc Hân"
-                  className="w-full h-full rounded-full object-cover"
-                />
-              </div>
+            {/* Traditional Bowl Stylized Emblem with Gold Ring */}
+            <div className={`rounded-full bg-[#2a0b0d] border-2 sm:border-[2.5px] border-amber-300/90 p-0.5 sm:p-1 flex items-center justify-center shadow-xl ring-2 ring-amber-500/30 group-hover:border-yellow-200 group-hover:ring-amber-400/50 group-hover:scale-105 transition-all duration-300 shrink-0 ${
+              isScrolled ? 'w-10 h-10 sm:w-12 sm:h-12' : 'w-12 h-12 sm:w-15 sm:h-15 lg:w-16 lg:h-16'
+            }`}>
+              <img
+                src="/pho_ngoc_han_logo.svg"
+                alt="Logo Phở Ngọc Hân"
+                className="w-full h-full rounded-full object-cover shadow-inner"
+              />
+            </div>
 
-              <div className="flex flex-col text-left">
-                <span className={`font-serif font-black tracking-wide text-amber-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] leading-none group-hover:text-yellow-200 transition-all duration-300 ${
-                  isScrolled ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-3xl'
-                }`}>
-                  Phở Ngọc Hân
-                </span>
-                <span className="text-xs sm:text-sm font-calligraphy text-amber-300/90 tracking-wide font-normal pt-0.5">
-                  Tinh hoa phở truyền thống đất Hà Thành
-                </span>
-              </div>
+            <div className="flex flex-col text-left">
+              <span className={`font-serif font-black tracking-wide text-amber-100 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)] leading-tight group-hover:text-yellow-200 transition-all duration-300 ${
+                isScrolled ? 'text-lg sm:text-xl lg:text-2xl' : 'text-xl sm:text-2xl lg:text-3xl'
+              }`}>
+                Phở Ngọc Hân
+              </span>
+              <span className="hidden sm:block text-xs sm:text-sm font-calligraphy text-amber-300/90 tracking-wide font-normal pt-0.5">
+                Tinh hoa phở truyền thống đất Hà Thành
+              </span>
             </div>
           </div>
 
-          {/* Right: Cart & Search */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Right: Cart, Desktop Search & Mobile Menu Toggle */}
+          <div className="flex items-center gap-1.5 sm:gap-3">
             <button
               id="header-search-btn"
               onClick={onOpenSearch}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-black/20 text-xs sm:text-sm font-medium transition cursor-pointer text-amber-100"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-black/20 text-xs sm:text-sm font-medium transition cursor-pointer text-amber-100"
               title="Tìm kiếm món ăn"
             >
               <Search className="w-4 h-4 text-amber-200" />
@@ -189,19 +188,15 @@ export const Header: React.FC<HeaderProps> = ({
               id="header-cart-btn"
               onClick={onOpenCart}
               whileTap={{ scale: 0.95 }}
-              className="relative flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-amber-950/60 hover:bg-amber-950/80 border border-amber-400/50 text-xs sm:text-sm font-medium transition cursor-pointer shadow-sm text-amber-100"
+              className="relative flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-amber-950/60 hover:bg-amber-950/80 border border-amber-400/50 text-xs sm:text-sm font-medium transition cursor-pointer shadow-sm text-amber-100"
               title="Xem giỏ hàng"
             >
               <ShoppingCart className="w-4 h-4 text-amber-300" />
-              <span className="font-literary">
-                <strong className="text-amber-300 font-serif">{cartCount}</strong>{' '}
-                <span className="hidden sm:inline">Bát</span>
-              </span>
               {cartCount > 0 && (
                 <motion.span 
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
-                  className="absolute -top-1.5 -right-1.5 bg-red-600 text-amber-100 text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shadow-md border border-amber-300"
+                  className="absolute -top-1.5 -right-1.5 bg-red-600 text-amber-100 text-[10px] font-bold w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-md border border-amber-300"
                 >
                   {cartCount}
                 </motion.span>
@@ -212,10 +207,10 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               id="mobile-menu-toggle"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-md hover:bg-black/20 transition text-amber-200"
+              className="lg:hidden p-1.5 sm:p-2 rounded-xl bg-black/25 hover:bg-black/40 border border-amber-400/40 transition text-amber-200 flex items-center gap-1 cursor-pointer"
               aria-label="Menu"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5 sm:w-6 sm:h-6" /> : <Menu className="w-5 h-5 sm:w-6 sm:h-6" />}
             </button>
           </div>
         </div>
@@ -268,36 +263,69 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-        {/* Mobile Drawer Menu */}
+        {/* Mobile Drawer Menu (Artistic lacquer & parchment styled) */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-[#f4efe6] text-stone-800 border-b border-amber-300 shadow-2xl px-4 py-4 space-y-2 animate-fadeIn max-h-[calc(100vh-100px)] overflow-y-auto">
-            {navItems.map((item) => (
+          <div className="lg:hidden bg-[#fffdfa] text-stone-800 border-b-2 border-amber-400/60 shadow-2xl px-4 py-4 space-y-3 animate-fadeIn max-h-[calc(100vh-80px)] overflow-y-auto">
+            
+            {/* Quick Search trigger inside mobile menu */}
+            <div 
+              onClick={() => {
+                setMobileMenuOpen(false);
+                onOpenSearch();
+              }}
+              className="flex items-center gap-2.5 bg-[#fbf7f0] border border-amber-300/80 rounded-full px-3.5 py-2 text-xs text-stone-600 cursor-pointer hover:border-[#991b1b] transition shadow-inner"
+            >
+              <Search className="w-4 h-4 text-[#991b1b]" />
+              <span className="font-literary">Tìm món phở (tái lăn, tái gân, gà ta...)...</span>
+            </div>
+
+            {/* Language toggle inside mobile menu */}
+            <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-[#fbf7f0] border border-amber-200">
+              <span className="text-xs font-serif text-stone-700 font-medium">Ngôn ngữ hiển thị:</span>
               <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`block w-full text-left py-2.5 px-3 rounded-md text-sm font-bold transition-colors ${
-                  activeSection === item.id ? 'bg-amber-600 text-white' : 'hover:bg-stone-200/70 text-stone-800'
-                }`}
+                onClick={onToggleLang}
+                className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7f1d1d] hover:bg-[#6b1414] text-amber-100 text-xs font-serif font-bold shadow-xs transition cursor-pointer border border-amber-400/40"
               >
-                {item.label}
+                <span>🇻🇳</span>
+                <span>{currentLang === 'vi' ? 'Tiếng Việt' : 'English'}</span>
               </button>
-            ))}
-            <div className="pt-2 border-t border-stone-300 flex flex-col gap-2">
+            </div>
+
+            {/* Navigation links */}
+            <div className="space-y-1 pt-1">
+              {navItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => handleNavClick(item.id)}
+                  className={`block w-full text-left py-2.5 px-3.5 rounded-xl text-xs sm:text-sm font-serif font-bold transition-all cursor-pointer ${
+                    activeSection === item.id 
+                      ? 'bg-gradient-to-r from-[#7f1d1d] to-[#991b1b] text-amber-100 shadow-sm border border-amber-400/30' 
+                      : 'hover:bg-amber-100/60 text-stone-800'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Action Buttons: Reservation & Hotline */}
+            <div className="pt-2 border-t border-amber-200/80 flex flex-col gap-2">
               <button
                 onClick={() => {
                   setMobileMenuOpen(false);
                   onOpenReservation();
                 }}
-                className="w-full bg-[#e77a1e] hover:bg-[#d46a10] text-white py-2.5 rounded-full font-bold text-sm shadow flex items-center justify-center gap-2"
+                className="w-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100 py-2.5 rounded-full font-serif font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 border border-amber-400/40 cursor-pointer"
               >
-                <CalendarCheck className="w-4 h-4" />
-                Đặt bàn ngay
+                <CalendarCheck className="w-4 h-4 text-amber-300" />
+                <span>Đặt bàn trước chu đáo</span>
               </button>
               <a
-                href="tel:19009077"
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-full font-bold text-xs flex items-center justify-center gap-2"
+                href="tel:0988567899"
+                className="w-full bg-[#1c0809] hover:bg-[#2b0c0e] text-amber-200 py-2 rounded-full font-serif font-bold text-xs flex items-center justify-center gap-2 border border-amber-500/30 shadow-xs"
               >
-                <Phone className="w-3.5 h-3.5" /> Hotline: 1900 9077
+                <Phone className="w-3.5 h-3.5 text-amber-400" /> 
+                <span>Hotline: 0988 567 899 - 1900 9077</span>
               </a>
             </div>
           </div>
