@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingCart, Search, Menu, X, Phone, CalendarCheck, Sparkles, BellRing } from 'lucide-react';
+import { ShoppingCart, Search, Menu, X, Phone, CalendarCheck } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeaderProps {
   cartCount: number;
@@ -9,8 +10,8 @@ interface HeaderProps {
   onOpenReservation: () => void;
   activeSection: string;
   onNavigate: (sectionId: string) => void;
-  currentLang: 'vi' | 'en';
-  onToggleLang: () => void;
+  currentLang?: 'vi' | 'en';
+  onToggleLang?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -20,19 +21,18 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenReservation,
   activeSection,
   onNavigate,
-  currentLang,
-  onToggleLang,
 }) => {
+  const { lang, toggleLang, t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [tickerIndex, setTickerIndex] = useState(0);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isScrolled, setIsScrolled] = useState(false);
 
   const announcements = [
-    { text: '🥣 Gọi bát phở đặc biệt tặng ngay đĩa quẩy giòn 3 chiếc', highlight: 'HOT PROMO' },
-    { text: '🎓 Giảm 10% cho sinh viên & giảng viên Đại học Xây Dựng, Bách Khoa', highlight: 'TRI ÂN ĐHXD' },
-    { text: '🛵 Giao phở nóng tận nơi trong 30 phút - Hotline: 0988 567 899', highlight: 'GIAO NHANH' },
-    { text: '✨ Phở Cô Hân - Nước dùng ninh xương bò 18 tiếng ngọt thanh nguyên bản', highlight: 'PHỞ NGỌC HÂN' },
+    { text: t('ticker.1'), highlight: 'HOT PROMO' },
+    { text: t('ticker.2'), highlight: 'TRI ÂN ĐHXD' },
+    { text: t('ticker.3'), highlight: 'GIAO NHANH' },
+    { text: t('ticker.4'), highlight: 'PHỞ NGỌC HÂN' },
   ];
 
   // Rotate announcement ticker every 4.5 seconds
@@ -58,12 +58,11 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   const navItems = [
-    { id: 'trang-chu', label: currentLang === 'vi' ? 'TRANG CHỦ' : 'HOME' },
-    // { id: 'gioi-thieu', label: currentLang === 'vi' ? 'GIỚI THIỆU' : 'ABOUT US' },
-    { id: 'thuc-don', label: currentLang === 'vi' ? 'THỰC ĐƠN' : 'MENU' },
-    { id: 'blog-am-thuc', label: currentLang === 'vi' ? 'BLOG ẨM THỰC' : 'BLOG' },
-    { id: 'he-thong-cua-hang', label: currentLang === 'vi' ? 'HỆ THỐNG CỬA HÀNG' : 'LOCATIONS' },
-    { id: 'lien-he', label: currentLang === 'vi' ? 'LIÊN HỆ' : 'CONTACT' },
+    { id: 'trang-chu', label: t('nav.home') },
+    { id: 'thuc-don', label: t('nav.menu') },
+    { id: 'blog-am-thuc', label: t('nav.blog') },
+    { id: 'he-thong-cua-hang', label: t('nav.locations') },
+    { id: 'lien-he', label: t('nav.contact') },
   ];
 
   const handleNavClick = (id: string) => {
@@ -97,7 +96,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="relative h-5 overflow-hidden flex-1">
               <AnimatePresence mode="wait">
                 <motion.span
-                  key={tickerIndex}
+                  key={tickerIndex + '-' + lang}
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -15 }}
@@ -111,7 +110,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           <div className="hidden md:flex items-center gap-4 text-[11px] text-amber-200/90 font-medium shrink-0 font-serif">
-            <span>Giờ phục vụ: 06:00 - 22:30</span>
+            <span>{t('nav.hours')}</span>
             <span className="text-amber-500">❖</span>
             <a href="tel:19009077" className="hover:text-amber-300 transition font-bold text-amber-300 flex items-center gap-1">
               <Phone className="w-3 h-3 text-amber-400" /> 1900 9077 - 0988 567 899
@@ -134,12 +133,12 @@ export const Header: React.FC<HeaderProps> = ({
           <div className="hidden sm:flex items-center gap-2">
             <button
               id="lang-toggle-btn"
-              onClick={onToggleLang}
-              className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/25 hover:bg-black/35 text-xs font-medium transition cursor-pointer border border-amber-300/30 text-amber-100"
-              title="Đổi ngôn ngữ / Switch language"
+              onClick={toggleLang}
+              className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-black/25 hover:bg-black/35 text-xs font-medium transition cursor-pointer border border-amber-300/30 text-amber-100"
+              title="Switch language / Đổi ngôn ngữ"
             >
-              <span className="text-sm">🇻🇳</span>
-              <span className="font-serif">{currentLang === 'vi' ? 'Tiếng Việt' : 'English'}</span>
+              <span className="text-sm">{lang === 'vi' ? '🇻🇳' : '🇬🇧'}</span>
+              <span className="font-serif">{lang === 'vi' ? 'Tiếng Việt' : 'English'}</span>
             </button>
           </div>
 
@@ -166,7 +165,7 @@ export const Header: React.FC<HeaderProps> = ({
                 Phở Ngọc Hân
               </span>
               <span className="hidden sm:block text-xs sm:text-sm font-calligraphy text-amber-300/90 tracking-wide font-normal pt-0.5">
-                Tinh hoa phở truyền thống đất Hà Thành
+                {t('nav.tagline')}
               </span>
             </div>
           </div>
@@ -177,10 +176,10 @@ export const Header: React.FC<HeaderProps> = ({
               id="header-search-btn"
               onClick={onOpenSearch}
               className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-black/20 text-xs sm:text-sm font-medium transition cursor-pointer text-amber-100"
-              title="Tìm kiếm món ăn"
+              title={t('nav.search')}
             >
               <Search className="w-4 h-4 text-amber-200" />
-              <span className="hidden sm:inline font-literary">Tìm kiếm</span>
+              <span className="hidden sm:inline font-literary">{t('nav.search')}</span>
             </button>
 
             <motion.button
@@ -188,7 +187,7 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={onOpenCart}
               whileTap={{ scale: 0.95 }}
               className="relative flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-full bg-amber-950/60 hover:bg-amber-950/80 border border-amber-400/50 text-xs sm:text-sm font-medium transition cursor-pointer shadow-sm text-amber-100"
-              title="Xem giỏ hàng"
+              title="Cart"
             >
               <ShoppingCart className="w-4 h-4 text-amber-300" />
               {cartCount > 0 && (
@@ -257,7 +256,7 @@ export const Header: React.FC<HeaderProps> = ({
               className="bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100 px-5 py-1.5 rounded-full font-serif font-bold text-xs xl:text-sm shadow-md transition cursor-pointer flex items-center gap-1.5 border border-amber-400/40"
             >
               <CalendarCheck className="w-4 h-4 text-amber-300" />
-              <span>Đặt bàn trước</span>
+              <span>{t('nav.reserve')}</span>
             </motion.button>
           </div>
         </div>
@@ -275,18 +274,18 @@ export const Header: React.FC<HeaderProps> = ({
               className="flex items-center gap-2.5 bg-[#fbf7f0] border border-amber-300/80 rounded-full px-3.5 py-2 text-xs text-stone-600 cursor-pointer hover:border-[#991b1b] transition shadow-inner"
             >
               <Search className="w-4 h-4 text-[#991b1b]" />
-              <span className="font-literary">Tìm món phở (tái lăn, tái gân, gà ta...)...</span>
+              <span className="font-literary">{t('nav.search_placeholder')}</span>
             </div>
 
             {/* Language toggle inside mobile menu */}
             <div className="flex items-center justify-between px-3 py-2 rounded-xl bg-[#fbf7f0] border border-amber-200">
-              <span className="text-xs font-serif text-stone-700 font-medium">Ngôn ngữ hiển thị:</span>
+              <span className="text-xs font-serif text-stone-700 font-medium">{t('nav.lang_label')}</span>
               <button
-                onClick={onToggleLang}
+                onClick={toggleLang}
                 className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7f1d1d] hover:bg-[#6b1414] text-amber-100 text-xs font-serif font-bold shadow-xs transition cursor-pointer border border-amber-400/40"
               >
-                <span>🇻🇳</span>
-                <span>{currentLang === 'vi' ? 'Tiếng Việt' : 'English'}</span>
+                <span>{lang === 'vi' ? '🇻🇳' : '🇬🇧'}</span>
+                <span>{lang === 'vi' ? 'Tiếng Việt' : 'English'}</span>
               </button>
             </div>
 
@@ -317,7 +316,7 @@ export const Header: React.FC<HeaderProps> = ({
                 className="w-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100 py-2.5 rounded-full font-serif font-bold text-xs sm:text-sm shadow-md flex items-center justify-center gap-2 border border-amber-400/40 cursor-pointer"
               >
                 <CalendarCheck className="w-4 h-4 text-amber-300" />
-                <span>Đặt bàn trước chu đáo</span>
+                <span>{t('nav.reserve_mobile')}</span>
               </button>
               <a
                 href="tel:0988567899"

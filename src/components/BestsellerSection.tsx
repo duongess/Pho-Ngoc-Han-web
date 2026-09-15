@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { ShoppingCart, Check, Flame, Award, Star, ArrowRight } from 'lucide-react';
+import { ShoppingCart, Check, Award, Star } from 'lucide-react';
 import { Dish } from '../types';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { useLanguage } from '../context/LanguageContext';
 
 interface BestsellerSectionProps {
   bestsellers: Dish[];
@@ -15,6 +16,7 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
   onAddToCart,
   onViewDish,
 }) => {
+  const { lang, t, getDishName, getDishDesc } = useLanguage();
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
 
   const handleOrder = (dish: Dish, e: React.MouseEvent) => {
@@ -31,9 +33,9 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
   };
 
   const medals = [
-    { label: '✦ BẢO VẬT ẨM THỰC #1', bg: 'bg-gradient-to-r from-[#991b1b] to-[#b91c1c]', border: 'border-amber-400' },
-    { label: '✦ ĐẶC SẢN NỨC TIẾNG #2', bg: 'bg-gradient-to-r from-[#b45309] to-[#d97706]', border: 'border-amber-300' },
-    { label: '✦ TINH TÚY HÀ THÀNH #3', bg: 'bg-gradient-to-r from-[#854d0e] to-[#a16207]', border: 'border-amber-200' },
+    { label: lang === 'en' ? '✦ CULINARY TREASURE #1' : '✦ BẢO VẬT ẨM THỰC #1', bg: 'bg-gradient-to-r from-[#991b1b] to-[#b91c1c]', border: 'border-amber-400' },
+    { label: lang === 'en' ? '✦ FAMOUS SPECIALTY #2' : '✦ ĐẶC SẢN NỨC TIẾNG #2', bg: 'bg-gradient-to-r from-[#b45309] to-[#d97706]', border: 'border-amber-300' },
+    { label: lang === 'en' ? '✦ HANOI ESSENCE #3' : '✦ TINH TÚY HÀ THÀNH #3', bg: 'bg-gradient-to-r from-[#854d0e] to-[#a16207]', border: 'border-amber-200' },
   ];
 
   return (
@@ -48,15 +50,15 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
       >
         {/* Seal Stamp & Eyebrow */}
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#fbf7f0] border border-amber-300/80 shadow-xs mb-3">
-          <span className="seal-stamp text-[10px] py-0.5 px-1.5">HẢO HẠNG</span>
+          <span className="seal-stamp text-[10px] py-0.5 px-1.5">{lang === 'en' ? 'PREMIUM' : 'HẢO HẠNG'}</span>
           <span className="font-serif font-semibold text-xs tracking-widest text-[#7f1d1d] uppercase">
-            Tuyệt Phẩm Phở Gia Truyền
+            {t('bestseller.eyebrow')}
           </span>
         </div>
 
         {/* Artistic Calligraphic Heading */}
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-wide text-[#7f1d1d]">
-          Top 3 Món Bestseller
+          {t('bestseller.title')}
         </h2>
 
         {/* Traditional Brass / Gold Motif Divider */}
@@ -67,7 +69,7 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
         </div>
 
         <p className="text-xs sm:text-sm text-stone-600 font-literary italic max-w-2xl mx-auto leading-relaxed">
-          Ninh xương ống 18 tiếng, nước dùng ngọt thanh nguyên bản không mì chính, thịt tươi mềm dẻo thái tay mỗi sớm
+          {t('bestseller.desc')}
         </p>
       </motion.div>
 
@@ -100,7 +102,7 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
                 <ImagePlaceholder
                   src={dish.image}
-                  alt={dish.name}
+                  alt={getDishName(dish)}
                   aspectRatio="auto"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
@@ -109,7 +111,7 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
                 {/* Rating Badge */}
                 <div className="absolute bottom-3 right-3 bg-black/65 backdrop-blur-xs text-amber-300 text-xs px-2.5 py-1 rounded-full font-serif font-bold flex items-center gap-1 border border-amber-400/40">
                   <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
-                  <span>5.0 (999+ thực khách khen)</span>
+                  <span>5.0 {lang === 'en' ? '(999+ reviews)' : '(999+ thực khách khen)'}</span>
                 </div>
               </div>
 
@@ -117,11 +119,11 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
               <div className="p-5 sm:p-6 flex-1 flex flex-col justify-between bg-gradient-to-b from-[#fffdfa] to-[#fbf7f0]">
                 <div>
                   <h3 className="text-xl sm:text-2xl font-serif font-black text-[#261c16] group-hover:text-[#991b1b] transition-colors leading-snug">
-                    {dish.name}
+                    {getDishName(dish)}
                   </h3>
                   
                   <p className="text-xs sm:text-sm text-stone-600 mt-2 font-literary line-clamp-3 leading-relaxed">
-                    {dish.description}
+                    {getDishDesc(dish)}
                   </p>
                 </div>
 
@@ -149,12 +151,12 @@ export const BestsellerSection: React.FC<BestsellerSectionProps> = ({
                     {isJustAdded ? (
                       <>
                         <Check className="w-4 h-4" />
-                        <span>Đã thêm</span>
+                        <span>{lang === 'en' ? 'Added' : 'Đã thêm'}</span>
                       </>
                     ) : (
                       <>
                         <ShoppingCart className="w-4 h-4 text-amber-300" />
-                        <span>Thêm bát</span>
+                        <span>{lang === 'en' ? 'Add Bowl' : 'Thêm bát'}</span>
                       </>
                     )}
                   </motion.button>

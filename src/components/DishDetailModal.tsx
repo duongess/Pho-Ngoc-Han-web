@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Plus, Minus, ShoppingCart, Sparkles, Check } from 'lucide-react';
 import { Dish } from '../types';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { useLanguage } from '../context/LanguageContext';
 
 interface DishDetailModalProps {
   dish: Dish | null;
@@ -14,10 +15,14 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
   onClose,
   onAddToCart,
 }) => {
+  const { lang, t, getDishName, getDishDesc } = useLanguage();
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 
   if (!dish) return null;
+
+  const dishName = getDishName(dish);
+  const dishDesc = getDishDesc(dish);
 
   const formatPrice = (val: number) => {
     return new Intl.NumberFormat('vi-VN').format(val) + 'đ';
@@ -32,6 +37,22 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
     }, 800);
   };
 
+  const translateTag = (tag: string) => {
+    if (lang !== 'en') return tag;
+    const map: Record<string, string> = {
+      'Bán chạy nhất': 'Best Seller',
+      'Gia truyền': 'Traditional',
+      'Nổi tiếng': 'Famous',
+      'Đặc sản': 'Specialty',
+      'Thanh vị': 'Delicate Flavor',
+      'Tươi ngon': 'Fresh & Crisp',
+      'Ăn kèm': 'Side Dish',
+      'Giải khát': 'Refreshing',
+      'Món mới': 'New Dish',
+    };
+    return map[tag] || tag;
+  };
+
   return (
     <div className="fixed inset-0 z-50 bg-black/65 backdrop-blur-xs flex items-center justify-center p-4">
       <div className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl border border-stone-200 animate-fadeIn">
@@ -39,7 +60,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
         <button
           onClick={onClose}
           className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center transition cursor-pointer"
-          aria-label="Đóng chi tiết món"
+          aria-label={lang === 'en' ? 'Close dish detail' : 'Đóng chi tiết món'}
         >
           <X className="w-5 h-5" />
         </button>
@@ -48,13 +69,15 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
         <div className="relative aspect-video w-full overflow-hidden bg-stone-100">
           <ImagePlaceholder
             src={dish.image}
-            alt={dish.name}
+            alt={dishName}
             category={dish.category}
             aspectRatio="video"
             className="w-full h-full object-cover"
           />
           <div className="absolute bottom-3 left-3 bg-[#991b1b] text-amber-100 text-xs font-serif font-bold px-3 py-1 rounded-full shadow-lg border border-amber-300/40 flex items-center gap-1.5">
-            <span className="seal-stamp text-[9px] py-0 px-1">GIA TRUYỀN</span>
+            <span className="seal-stamp text-[9px] py-0 px-1">
+              {lang === 'en' ? 'AUTHENTIC' : 'GIA TRUYỀN'}
+            </span>
             <span>Phở Ngọc Hân</span>
           </div>
         </div>
@@ -64,7 +87,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="text-xl sm:text-2xl font-serif font-black text-[#261c16]">
-                {dish.name}
+                {dishName}
               </h3>
               <div className="flex flex-wrap gap-1.5 mt-2">
                 {dish.tags?.map((tag, idx) => (
@@ -72,7 +95,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
                     key={idx}
                     className="text-[10px] font-serif font-bold bg-[#991b1b]/10 text-[#991b1b] border border-[#991b1b]/20 px-2.5 py-0.5 rounded-full"
                   >
-                    {tag}
+                    {translateTag(tag)}
                   </span>
                 ))}
               </div>
@@ -83,12 +106,12 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
           </div>
 
           <p className="text-xs sm:text-sm text-stone-700 leading-relaxed font-literary">
-            {dish.description}
+            {dishDesc}
           </p>
 
           <div className="bg-[#fbf7f0] p-3 rounded-xl border border-amber-300/60 flex items-center gap-2 text-xs text-stone-800 font-literary">
             <Sparkles className="w-4 h-4 text-[#991b1b] shrink-0" />
-            <span>Nước dùng ninh xương 18 tiếng nguyên chất không mì chính, chế biến nóng hổi ngay khi quý khách gọi món.</span>
+            <span>{t('dish_modal.broth_note')}</span>
           </div>
 
           {/* Quantity & Add to cart */}
@@ -97,7 +120,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
               <button
                 onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                 className="text-stone-600 hover:text-stone-900 p-1 cursor-pointer"
-                aria-label="Giảm số lượng"
+                aria-label={lang === 'en' ? 'Decrease quantity' : 'Giảm số lượng'}
               >
                 <Minus className="w-4 h-4" />
               </button>
@@ -107,7 +130,7 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
               <button
                 onClick={() => setQuantity((q) => q + 1)}
                 className="text-stone-600 hover:text-stone-900 p-1 cursor-pointer"
-                aria-label="Tăng số lượng"
+                aria-label={lang === 'en' ? 'Increase quantity' : 'Tăng số lượng'}
               >
                 <Plus className="w-4 h-4" />
               </button>
@@ -124,12 +147,12 @@ export const DishDetailModal: React.FC<DishDetailModalProps> = ({
               {added ? (
                 <>
                   <Check className="w-4 h-4" />
-                  <span>Đã thêm vào giỏ</span>
+                  <span>{t('dish_modal.added')}</span>
                 </>
               ) : (
                 <>
                   <ShoppingCart className="w-4 h-4 text-amber-300" />
-                  <span>Thêm bát phở • {formatPrice(dish.price * quantity)}</span>
+                  <span>{t('dish_modal.add_btn')}{formatPrice(dish.price * quantity)}</span>
                 </>
               )}
             </button>

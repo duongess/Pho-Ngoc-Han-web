@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Play, X, ChevronLeft, ChevronRight, Eye, Film, Sparkles, Clock, Youtube, ExternalLink } from 'lucide-react';
 import { VIDEOS } from '../data/mockData';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { useLanguage } from '../context/LanguageContext';
 
 // Extract YouTube ID from various formats (shorts, watch?v=, youtu.be, embed)
 export function getYouTubeId(url?: string): string | null {
@@ -63,11 +64,23 @@ export function resolveVideoThumbnail(video: { thumbnail: string; videoUrl?: str
 }
 
 export const VideoSection: React.FC = () => {
+  const { lang, t } = useLanguage();
   const [activeVideoIndex, setActiveVideoIndex] = useState(0);
   const [direction, setDirection] = useState<number>(1);
   const [isPlayingModal, setIsPlayingModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1000);
+
+  const getVideoTitle = (video: typeof VIDEOS[0]) => {
+    if (lang === 'vi') return video.title;
+    const map: Record<string, string> = {
+      'vlog-nuoc-dung': 'The 18-Hour Authentic Beef Phở Broth Simmering Journey',
+      'vlog-sinh-vien-dhxd': 'Hanoi Civil Engineering Students Review Phở Ngọc Hân',
+      'vlog-tai-lan': 'Steaming Hot Sautéed Rare Beef Phở on a Hanoi Winter Day',
+      'vlog-khach-tay': 'Foreign Guests Savoring Old Quarter Beef Phở for the First Time',
+    };
+    return map[video.id] || video.title;
+  };
 
   // Dynamic durations mapped by video ID, cached in localStorage
   const [videoDurations, setVideoDurations] = useState<Record<string, string>>(() => {
@@ -204,18 +217,18 @@ export const VideoSection: React.FC = () => {
         className="text-center mb-10 sm:mb-14"
       >
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#fbf7f0] border border-amber-300/80 shadow-xs mb-3">
-          <span className="seal-stamp text-[10px] py-0.5 px-1.5">THƯỚC PHIM</span>
+          <span className="seal-stamp text-[10px] py-0.5 px-1.5">{t('video.seal')}</span>
           <span className="font-serif font-semibold text-xs tracking-widest text-[#7f1d1d] uppercase">
-            Hương Vị Qua Từng Khung Hình
+            {t('video.eyebrow')}
           </span>
         </div>
 
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-wide text-[#7f1d1d]">
-          Góc Phim Phở Ngọc Hân
+          {t('video.heading')}
         </h2>
 
         <p className="font-calligraphy text-2xl sm:text-3xl text-[#b45309] mt-2 font-normal">
-          Thực khách và học trò ghi lại những khoảnh khắc ấm lòng
+          {t('video.subheading')}
         </p>
 
         {/* Traditional Brass / Gold Motif Divider */}
@@ -235,7 +248,7 @@ export const VideoSection: React.FC = () => {
           whileTap={{ scale: 0.92 }}
           onClick={handlePrev}
           className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-white text-stone-800 shadow-xl flex items-center justify-center transition-all border border-stone-200 cursor-pointer backdrop-blur-md"
-          aria-label="Video trước"
+          aria-label={lang === 'en' ? 'Previous video' : 'Video trước'}
         >
           <ChevronLeft className="w-6 h-6 text-amber-900" />
         </motion.button>
@@ -245,7 +258,7 @@ export const VideoSection: React.FC = () => {
           whileTap={{ scale: 0.92 }}
           onClick={handleNext}
           className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-30 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/95 hover:bg-white text-stone-800 shadow-xl flex items-center justify-center transition-all border border-stone-200 cursor-pointer backdrop-blur-md"
-          aria-label="Video tiếp theo"
+          aria-label={lang === 'en' ? 'Next video' : 'Video tiếp theo'}
         >
           <ChevronRight className="w-6 h-6 text-amber-900" />
         </motion.button>
@@ -300,7 +313,7 @@ export const VideoSection: React.FC = () => {
                     {/* Thumbnail Image */}
                     <ImagePlaceholder
                       src={displayThumb}
-                      alt={video.title}
+                      alt={getVideoTitle(video)}
                       aspectRatio="video"
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
@@ -322,7 +335,7 @@ export const VideoSection: React.FC = () => {
                             whileHover={{ scale: 1.15 }}
                             whileTap={{ scale: 0.95 }}
                             className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-white flex items-center justify-center shadow-2xl transition cursor-pointer border-2 border-amber-300"
-                            aria-label="Xem video"
+                            aria-label={t('video.watch_badge')}
                           >
                             <Play className="w-8 h-8 fill-current ml-1 text-amber-200" />
                           </motion.button>
@@ -342,13 +355,13 @@ export const VideoSection: React.FC = () => {
                           {video.videoUrl?.includes('/shorts/') ? 'YouTube Shorts' : 'Phở Ngọc Hân'}
                         </span>
                         <p className="text-xs sm:text-sm md:text-base font-serif font-bold mt-1 line-clamp-1 drop-shadow-md text-white">
-                          {video.title}
+                          {getVideoTitle(video)}
                         </p>
                       </div>
 
                       <span 
                         className="text-[11px] sm:text-xs bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded text-amber-200 font-mono font-bold shrink-0 border border-white/20 flex items-center gap-1"
-                        title="Thời lượng video"
+                        title={t('video.duration')}
                       >
                         <Clock className="w-3 h-3 text-amber-300" />
                         {videoDurations[video.id] || video.duration || '01:00'}
@@ -393,7 +406,7 @@ export const VideoSection: React.FC = () => {
               className="space-y-1.5 w-full"
             >
               <h3 className="text-base sm:text-lg md:text-xl font-serif font-black text-[#7f1d1d] leading-snug">
-                {currentVideo.title}
+                {getVideoTitle(currentVideo)}
               </h3>
               <p className="text-xs sm:text-sm text-stone-600 flex flex-wrap items-center justify-center gap-3">
                 <span className="flex items-center gap-1 font-serif">
@@ -406,7 +419,7 @@ export const VideoSection: React.FC = () => {
                   {currentVideo.channel}
                 </span>
                 <span className="text-stone-300">•</span>
-                <span className="text-stone-500 font-serif">Thời lượng: {videoDurations[currentVideo.id] || currentVideo.duration || '01:00'}</span>
+                <span className="text-stone-500 font-serif">{t('video.duration')} {videoDurations[currentVideo.id] || currentVideo.duration || '01:00'}</span>
               </p>
             </motion.div>
           </AnimatePresence>
@@ -421,8 +434,8 @@ export const VideoSection: React.FC = () => {
                 key={video.id}
                 onClick={() => handleSelect(idx)}
                 className="relative py-2 px-1 focus:outline-none cursor-pointer group"
-                aria-label={`Chuyển đến video ${idx + 1}`}
-                title={video.title}
+                aria-label={`${lang === 'en' ? 'Go to video' : 'Chuyển đến video'} ${idx + 1}`}
+                title={getVideoTitle(video)}
               >
                 <div
                   className={`h-2 rounded-full transition-all duration-400 ${
@@ -461,7 +474,7 @@ export const VideoSection: React.FC = () => {
               <button
                 onClick={() => setIsPlayingModal(false)}
                 className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-stone-800/90 text-white hover:bg-red-600 flex items-center justify-center cursor-pointer transition shadow-md"
-                aria-label="Đóng video"
+                aria-label={lang === 'en' ? 'Close video' : 'Đóng video'}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -470,7 +483,7 @@ export const VideoSection: React.FC = () => {
                 <iframe
                   className="w-full h-full"
                   src={embedSrc}
-                  title={currentVideo.title}
+                  title={getVideoTitle(currentVideo)}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 />
@@ -478,7 +491,7 @@ export const VideoSection: React.FC = () => {
 
               <div className="p-4 bg-stone-900 text-stone-100 flex items-center justify-between gap-3">
                 <div className="min-w-0">
-                  <h4 className="font-bold text-sm sm:text-base font-serif text-amber-200 truncate">{currentVideo.title}</h4>
+                  <h4 className="font-bold text-sm sm:text-base font-serif text-amber-200 truncate">{getVideoTitle(currentVideo)}</h4>
                   <p className="text-xs text-stone-400 mt-0.5">Phở Ngọc Hân</p>
                 </div>
                 {currentVideo.videoUrl && (
@@ -489,7 +502,7 @@ export const VideoSection: React.FC = () => {
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100 text-xs font-serif font-bold transition shrink-0 shadow border border-amber-400/40"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
-                    <span>Mở xem</span>
+                    <span>{lang === 'en' ? 'Watch on YouTube' : 'Mở xem'}</span>
                   </a>
                 )}
               </div>

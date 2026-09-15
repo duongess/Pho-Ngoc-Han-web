@@ -1,53 +1,56 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ChevronLeft, ChevronRight, Gift, Sparkles, ArrowRight, ShoppingBag, Flame, Clock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Gift, ShoppingBag, Flame, Clock, ArrowRight } from 'lucide-react';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeroBannerProps {
   onOrderNow: () => void;
 }
 
 export const HeroBanner: React.FC<HeroBannerProps> = ({ onOrderNow }) => {
+  const { lang, t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
 
   const slides = [
     {
       id: 'promo-tailan',
-      badge: 'ĐẶC SẢN NỨC TIẾNG HÀ THÀNH',
-      headlineMain: 'PHỞ BÒ TÁI LĂN',
-      headlineHighlight: 'Hương Vị Phở Xưa Hà Nội',
-      badgeTitle: 'MỸ VỊ GIA TRUYỀN',
-      badgeItems: ['Nước dùng ninh xương 18 tiếng', 'Giảm 10% sinh viên & thầy cô ĐHXD'],
-      footerNote: '* Nước dùng trong veo ngọt tủy, thơm nồng gừng nướng & hồi quế',
-      ctaText: 'THƯỞNG THỨC NGAY',
-      dishTitle: 'Phở Bò Tái Lăn Hà Nội',
-      dishTag: 'Tuyệt phẩm #1 Cô Hân',
+      badge: t('hero.slide1.badge'),
+      headlineMain: t('hero.slide1.headline'),
+      headlineHighlight: t('hero.slide1.highlight'),
+      badgeTitle: t('hero.slide1.badgetitle'),
+      badgeItems: [t('hero.slide1.item1'), t('hero.slide1.item2')],
+      footerNote: t('hero.slide1.footernote'),
+      ctaText: t('hero.slide1.cta'),
+      dishTitle: t('hero.slide1.dish'),
+      dishTag: t('hero.slide1.tag'),
       image: 'https://pho10lyquocsu.com.vn/watermark/product/540x540x1/upload/product/z2343703734202511313b61907e2f570369ba5f32ead04-6355.jpg',
     },
     {
       id: 'promo-phoga',
-      badge: 'TINH TÚY GÀ TA THẢ ĐỒI',
-      headlineMain: 'PHỞ GÀ TA ĐÙI CHẶT',
-      headlineHighlight: 'Da Vàng Óng Giòn Sần Sật',
-      badgeTitle: 'THANH NHÃ NGUYÊN BẢN',
-      badgeItems: ['Lá chanh non thái chỉ thơm ngát', 'Nước dùng thanh trong ngọt dịu tự nhiên'],
-      footerNote: '* Gà ta thả đồi tuyển chọn luộc mới mỗi sớm tinh mơ',
-      ctaText: 'XEM THỰC ĐƠN',
-      dishTitle: 'Phở Gà Ta Đùi Chặt',
-      dishTag: 'Thanh tao ngọt dịu',
+      badge: t('hero.slide2.badge'),
+      headlineMain: t('hero.slide2.headline'),
+      headlineHighlight: t('hero.slide2.highlight'),
+      badgeTitle: t('hero.slide2.badgetitle'),
+      badgeItems: [t('hero.slide2.item1'), t('hero.slide2.item2')],
+      footerNote: t('hero.slide2.footernote'),
+      ctaText: t('hero.slide2.cta'),
+      dishTitle: t('hero.slide2.dish'),
+      dishTag: t('hero.slide2.tag'),
       image: 'https://pho10lyquocsu.com.vn/watermark/product/540x540x1/upload/product/z45056226691455b2d1e3ea75fce3d68c4f54745ab1363-1075.jpg',
     },
     {
       id: 'promo-cuon-xao',
-      badge: 'PHỞ BÒ ĐẶC BIỆT THẬP CẨM',
-      headlineMain: 'BÁT ĐẶC BIỆT ĐẦY ĐẶN',
-      badgeTitle: 'ĐẦY ĐỦ VỊ NGON',
-      badgeItems: ['Tái, nạm, gầu, gân & trứng trần', 'Tặng kèm đĩa quẩy giòn rụm vàng ươm'],
-      footerNote: '* Bát phở chất chứa tấm lòng của cô giáo gửi tới học trò',
-      ctaText: 'ĐẶT BÁT ĐẶC BIỆT',
-      dishTitle: 'Phở Bò Thập Cẩm Trứng Trần',
-      dishTag: 'Đầy đặn no ấm',
+      badge: t('hero.slide3.badge'),
+      headlineMain: t('hero.slide3.headline'),
+      badgeTitle: t('hero.slide3.badgetitle'),
+      headlineHighlight: lang === 'en' ? 'Rich Flavors & Warm Broth' : 'Đậm Đà Hương Vị Phở Xưa',
+      badgeItems: [t('hero.slide3.item1'), t('hero.slide3.item2')],
+      footerNote: t('hero.slide3.footernote'),
+      ctaText: t('hero.slide3.cta'),
+      dishTitle: t('hero.slide3.dish'),
+      dishTag: t('hero.slide3.tag'),
       image: 'https://pho10lyquocsu.com.vn/watermark/product/540x540x1/upload/product/anh-chup-man-hinh-2023-07-11-luc-124746-8268.png',
     }
   ];
@@ -157,7 +160,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onOrderNow }) => {
                   {/* Traditional Calligraphy Eyebrow with Seal */}
                   <div className="h-7 sm:h-8 flex items-center">
                     <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-black/40 backdrop-blur-md text-amber-200 text-xs sm:text-sm font-semibold tracking-wider uppercase w-fit border border-amber-400/40 shadow-inner">
-                      <span className="seal-stamp text-[9px] py-0.5 px-1.5">GIA TRUYỀN</span>
+                      <span className="seal-stamp text-[9px] py-0.5 px-1.5">{t('footer.seal')}</span>
                       <span className="font-serif tracking-widest text-amber-100">
                         {slide.badge}
                       </span>
@@ -335,10 +338,10 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onOrderNow }) => {
                 className="absolute -bottom-3 -right-2 sm:-right-4 bg-gradient-to-r from-[#991b1b] to-[#b91c1c] text-white rounded-2xl px-4 py-2.5 shadow-2xl border-2 border-amber-300 text-center"
               >
                 <span className="text-xs sm:text-sm font-serif font-black uppercase block leading-tight tracking-wider text-amber-200">
-                  TẶNG QUẨY GIÒN
+                  {lang === 'en' ? 'FREE CRULLERS' : 'TẶNG QUẨY GIÒN'}
                 </span>
                 <span className="text-[10px] text-amber-100 font-literary font-medium">
-                  Tươi nóng giòn tan mỗi ngày
+                  {lang === 'en' ? 'Freshly fried & crispy daily' : 'Tươi nóng giòn tan mỗi ngày'}
                 </span>
               </motion.div>
 

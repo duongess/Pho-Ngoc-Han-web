@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ShoppingCart, Eye, Plus, Check, Heart, Sparkles, Utensils } from 'lucide-react';
+import { Eye, Plus, Check, Heart } from 'lucide-react';
 import { Dish } from '../types';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FeaturedDishesProps {
   dishes: Dish[];
@@ -15,6 +16,7 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
   onAddToCart,
   onViewDish,
 }) => {
+  const { lang, t, getDishName, getDishDesc } = useLanguage();
   const [addedIds, setAddedIds] = useState<Record<string, boolean>>({});
   const [favorites, setFavorites] = useState<Record<string, boolean>>({});
 
@@ -36,6 +38,20 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
     return new Intl.NumberFormat('vi-VN').format(val) + 'đ';
   };
 
+  const translateTag = (tag: string) => {
+    if (lang === 'vi') return tag;
+    const map: Record<string, string> = {
+      'Bestseller': 'Bestseller',
+      'Đặc sản': 'Specialty',
+      'Thanh đạm': 'Light & Clean',
+      'Đặc biệt': 'Special Bowl',
+      'Kèm theo': 'Side Dish',
+      'Món tráng miệng': 'Dessert',
+      'Giải nhiệt': 'Refreshing',
+    };
+    return map[tag] || tag;
+  };
+
   return (
     <section id="thuc-don" className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Decorative Title */}
@@ -47,18 +63,18 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
         className="text-center mb-12 sm:mb-16"
       >
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#fbf7f0] border border-amber-300/80 shadow-xs mb-3">
-          <span className="seal-stamp text-[10px] py-0.5 px-1.5">TOÀN TẬP</span>
+          <span className="seal-stamp text-[10px] py-0.5 px-1.5">{lang === 'en' ? 'FULL MENU' : 'TOÀN TẬP'}</span>
           <span className="font-serif font-semibold text-xs tracking-widest text-[#7f1d1d] uppercase">
-            Hương Vị Phở Hà Nội Thuần Khiết
+            {t('dishes.eyebrow')}
           </span>
         </div>
 
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-wide text-[#7f1d1d]">
-          Thực Đơn Phở Ngọc Hân
+          {t('dishes.title')}
         </h2>
 
         <p className="font-calligraphy text-2xl sm:text-3xl text-[#b45309] mt-2 font-normal">
-          Ninh xương ống 18 tiếng • Không mì chính
+          {t('dishes.subtitle')}
         </p>
 
         {/* Traditional Brass / Gold Motif Divider */}
@@ -69,7 +85,7 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
         </div>
 
         <p className="text-xs sm:text-sm text-stone-600 font-literary italic max-w-2xl mx-auto leading-relaxed">
-          Chuyên các món phở bò truyền thống (tái, chín, gầu, gân, sốt vang), phở gà ta thả đồi thơm lá chanh, phở cuốn tươi mát và phở xào nóng hổi
+          {t('dishes.desc')}
         </p>
       </motion.div>
 
@@ -109,7 +125,7 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
                 <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-100">
                   <ImagePlaceholder
                     src={dish.image}
-                    alt={dish.name}
+                    alt={getDishName(dish)}
                     aspectRatio="auto"
                     className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-108"
                   />
@@ -118,7 +134,7 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
                   <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
                     {dish.tags?.[0] && (
                       <span className="bg-[#991b1b]/90 text-amber-100 font-serif text-[10px] font-bold px-2 py-0.5 rounded-md uppercase tracking-wider backdrop-blur-xs border border-amber-400/30">
-                        {dish.tags[0]}
+                        {translateTag(dish.tags[0])}
                       </span>
                     )}
                   </div>
@@ -127,7 +143,7 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
                   <button
                     onClick={(e) => toggleFavorite(dish.id, e)}
                     className="absolute top-2.5 right-2.5 w-8 h-8 rounded-full bg-white/85 hover:bg-white text-stone-600 hover:text-red-500 flex items-center justify-center shadow-sm transition-all z-10 border border-amber-200/50"
-                    title="Yêu thích"
+                    title={lang === 'en' ? 'Favorite' : 'Yêu thích'}
                   >
                     <Heart className={`w-4 h-4 ${isFav ? 'fill-red-500 text-red-500' : ''}`} />
                   </button>
@@ -136,7 +152,7 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <span className="bg-[#fffdfa] text-stone-900 font-serif text-xs font-bold px-3 py-1.5 rounded-full shadow-lg flex items-center gap-1.5 transform translate-y-2 group-hover:translate-y-0 transition-transform border border-amber-400/50">
                       <Eye className="w-3.5 h-3.5 text-[#991b1b]" />
-                      <span>Xem chi tiết</span>
+                      <span>{t('dishes.view_detail')}</span>
                     </span>
                   </div>
                 </div>
@@ -145,10 +161,10 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
                 <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between bg-gradient-to-b from-[#fffdfa] to-[#fbf7f0]">
                   <div>
                     <h3 className="text-base sm:text-lg font-serif font-black text-[#261c16] group-hover:text-[#991b1b] transition-colors line-clamp-1">
-                      {dish.name}
+                      {getDishName(dish)}
                     </h3>
                     <p className="text-xs text-stone-600 mt-1.5 font-literary line-clamp-2 leading-relaxed">
-                      {dish.description}
+                      {getDishDesc(dish)}
                     </p>
                   </div>
 
@@ -172,7 +188,7 @@ export const FeaturedDishes: React.FC<FeaturedDishesProps> = ({
                           ? 'bg-emerald-700 text-white'
                           : 'bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100'
                       }`}
-                      title="Đặt bát phở này"
+                      title={lang === 'en' ? 'Add this dish' : 'Đặt bát phở này'}
                     >
                       {isJustAdded ? (
                         <Check className="w-4 h-4" />

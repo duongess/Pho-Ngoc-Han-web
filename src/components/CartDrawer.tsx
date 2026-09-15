@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Trash2, Plus, Minus, ShoppingBag, ArrowRight, CheckCircle2, Gift } from 'lucide-react';
 import { CartItem } from '../types';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { useLanguage } from '../context/LanguageContext';
 
 interface CartDrawerProps {
   isOpen: boolean;
@@ -20,6 +21,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onRemoveItem,
   onClearCart,
 }) => {
+  const { lang, t, getDishName } = useLanguage();
   const [step, setStep] = useState<'cart' | 'checkout' | 'success'>('cart');
   const [customerName, setCustomerName] = useState('');
   const [phone, setPhone] = useState('');
@@ -40,7 +42,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const handleCheckoutSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!customerName.trim() || !phone.trim() || !address.trim()) {
-      alert('Vui lòng điền đầy đủ Họ tên, Số điện thoại và Địa chỉ giao hàng.');
+      alert(lang === 'en' ? 'Please fill in your Name, Phone number, and Delivery address.' : 'Vui lòng điền đầy đủ Họ tên, Số điện thoại và Địa chỉ giao hàng.');
       return;
     }
     setStep('success');
@@ -61,16 +63,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-5 h-5 text-amber-300" />
             <h3 className="font-bold text-base sm:text-lg font-serif tracking-wide">
-              {step === 'cart' ? 'Giỏ phở của bạn' : step === 'checkout' ? 'Thông tin giao hàng' : 'Đặt món thành công'}
+              {step === 'cart' ? t('cart.title') : step === 'checkout' ? t('cart.checkout_title') : t('cart.success_title')}
             </h3>
             <span className="bg-black/30 border border-amber-400/40 text-amber-200 text-xs px-2.5 py-0.5 rounded-full font-serif">
-              {totalQuantity} phần
+              {totalQuantity} {t('cart.items_count')}
             </span>
           </div>
           <button
             onClick={onClose}
             className="w-8 h-8 rounded-full hover:bg-black/30 flex items-center justify-center transition cursor-pointer text-amber-200"
-            aria-label="Đóng giỏ hàng"
+            aria-label={lang === 'en' ? 'Close cart' : 'Đóng giỏ hàng'}
           >
             <X className="w-5 h-5" />
           </button>
@@ -81,7 +83,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           <div className="bg-[#fbf7f0] border-b border-amber-300/80 px-4 py-2 flex items-center gap-2 text-xs text-[#7f1d1d] font-literary">
             <Gift className="w-4 h-4 text-[#991b1b] shrink-0" />
             <span>
-              Ưu đãi quán Cô Hân: Được <strong>tặng {freeQuayCount} đĩa quẩy giòn thơm</strong> khi đặt từ 2 bát phở!
+              {t('cart.promo_banner').replace('{count}', freeQuayCount.toString())}
             </span>
           </div>
         )}
@@ -96,16 +98,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                     <ShoppingBag className="w-8 h-8" />
                   </div>
                   <h4 className="font-serif font-black text-stone-800 text-lg">
-                    Giỏ hàng đang trống
+                    {t('cart.empty_title')}
                   </h4>
                   <p className="text-xs text-stone-500 max-w-xs font-literary">
-                    Hãy thưởng thức các bát phở bò, phở gà gia truyền thơm lừng từ thực đơn của Cô Hân nhé!
+                    {t('cart.empty_desc')}
                   </p>
                   <button
                     onClick={onClose}
                     className="mt-2 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] text-amber-100 font-serif text-xs font-bold hover:from-[#7f1d1d] hover:to-[#991b1b] transition shadow-md cursor-pointer border border-amber-400/40"
                   >
-                    Xem thực đơn phở ngay
+                    {t('cart.empty_btn')}
                   </button>
                 </div>
               ) : (
@@ -118,7 +120,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 border border-amber-200">
                         <ImagePlaceholder
                           src={item.dish.image}
-                          alt={item.dish.name}
+                          alt={getDishName(item.dish)}
                           category={item.dish.category}
                           aspectRatio="square"
                           showLabel={false}
@@ -128,7 +130,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
                       <div className="flex-1 min-w-0">
                         <h5 className="font-serif font-bold text-xs sm:text-sm text-stone-900 truncate">
-                          {item.dish.name}
+                          {getDishName(item.dish)}
                         </h5>
                         <div className="text-xs font-serif font-black text-[#991b1b] mt-0.5">
                           {formatPrice(item.dish.price)}
@@ -139,7 +141,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                           <button
                             onClick={() => onUpdateQuantity(item.dish.id, -1)}
                             className="w-6 h-6 rounded-md bg-[#fbf7f0] border border-amber-300 flex items-center justify-center text-stone-700 hover:bg-amber-100 cursor-pointer"
-                            aria-label="Giảm"
+                            aria-label={lang === 'en' ? 'Decrease' : 'Giảm'}
                           >
                             <Minus className="w-3 h-3" />
                           </button>
@@ -149,7 +151,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                           <button
                             onClick={() => onUpdateQuantity(item.dish.id, 1)}
                             className="w-6 h-6 rounded-md bg-[#fbf7f0] border border-amber-300 flex items-center justify-center text-stone-700 hover:bg-amber-100 cursor-pointer"
-                            aria-label="Tăng"
+                            aria-label={lang === 'en' ? 'Increase' : 'Tăng'}
                           >
                             <Plus className="w-3 h-3" />
                           </button>
@@ -159,7 +161,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                       <button
                         onClick={() => onRemoveItem(item.dish.id)}
                         className="text-stone-400 hover:text-red-600 p-1 transition cursor-pointer"
-                        title="Xóa món này"
+                        title={lang === 'en' ? 'Remove item' : 'Xóa món này'}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -174,67 +176,67 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             <form onSubmit={handleCheckoutSubmit} className="space-y-4 text-xs sm:text-sm">
               <div>
                 <label className="block text-stone-700 font-serif font-bold mb-1">
-                  Họ và tên người nhận <span className="text-red-600">*</span>
+                  {t('cart.name_label')} <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
-                  placeholder="Ví dụ: Thầy cô, bạn sinh viên Xây Dựng..."
+                  placeholder={t('cart.name_placeholder')}
                   className="w-full px-3.5 py-2 rounded-xl border border-amber-300/80 focus:outline-none focus:ring-2 focus:ring-[#991b1b] bg-[#fffdfa]"
                 />
               </div>
 
               <div>
                 <label className="block text-stone-700 font-serif font-bold mb-1">
-                  Số điện thoại <span className="text-red-600">*</span>
+                  {t('cart.phone_label')} <span className="text-red-600">*</span>
                 </label>
                 <input
                   type="tel"
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="Ví dụ: 0988 123 456"
+                  placeholder={lang === 'en' ? 'e.g., 0988 123 456' : 'Ví dụ: 0988 123 456'}
                   className="w-full px-3.5 py-2 rounded-xl border border-amber-300/80 focus:outline-none focus:ring-2 focus:ring-[#991b1b] bg-[#fffdfa]"
                 />
               </div>
 
               <div>
                 <label className="block text-stone-700 font-serif font-bold mb-1">
-                  Địa chỉ nhận phở nóng <span className="text-red-600">*</span>
+                  {t('cart.address_label')} <span className="text-red-600">*</span>
                 </label>
                 <textarea
                   required
                   rows={2}
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
-                  placeholder="Ký túc xá, văn phòng, phòng học, số nhà..."
+                  placeholder={t('cart.address_placeholder')}
                   className="w-full px-3.5 py-2 rounded-xl border border-amber-300/80 focus:outline-none focus:ring-2 focus:ring-[#991b1b] bg-[#fffdfa]"
                 />
               </div>
 
               <div>
                 <label className="block text-stone-700 font-serif font-bold mb-1">
-                  Yêu cầu đặc biệt (tùy chọn)
+                  {t('cart.note_label')}
                 </label>
                 <input
                   type="text"
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
-                  placeholder="Nhiều hành hoa, không mì chính, phở tái lăn..."
+                  placeholder={t('cart.note_placeholder')}
                   className="w-full px-3.5 py-2 rounded-xl border border-amber-300/80 focus:outline-none focus:ring-2 focus:ring-[#991b1b] bg-[#fffdfa]"
                 />
               </div>
 
               <div className="bg-[#fbf7f0] p-3 rounded-xl border border-amber-300/60 text-xs space-y-1 font-literary">
                 <div className="flex justify-between">
-                  <span>Hình thức thanh toán:</span>
-                  <span className="font-serif font-bold text-stone-900">Thanh toán khi nhận phở (COD)</span>
+                  <span>{t('cart.payment_method')}</span>
+                  <span className="font-serif font-bold text-stone-900">{t('cart.cod')}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span>Phí giao hàng:</span>
-                  <span className="font-serif font-bold text-emerald-700">Miễn phí giao quanh ĐH Xây Dựng & nội thành</span>
+                  <span>{t('cart.shipping_fee')}</span>
+                  <span className="font-serif font-bold text-emerald-700">{t('cart.free_shipping')}</span>
                 </div>
               </div>
 
@@ -244,13 +246,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   onClick={() => setStep('cart')}
                   className="w-1/3 py-2.5 rounded-full border border-stone-300 text-stone-700 font-serif font-bold text-xs hover:bg-stone-100 transition cursor-pointer"
                 >
-                  Quay lại
+                  {t('cart.back_btn')}
                 </button>
                 <button
                   type="submit"
                   className="w-2/3 py-2.5 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100 font-serif font-bold text-xs shadow-md transition cursor-pointer border border-amber-400/40"
                 >
-                  Xác nhận đặt bát phở
+                  {t('cart.confirm_btn')}
                 </button>
               </div>
             </form>
@@ -260,17 +262,17 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             <div className="h-full flex flex-col items-center justify-center text-center p-6 space-y-4">
               <CheckCircle2 className="w-16 h-16 text-emerald-600 animate-bounce" />
               <h4 className="text-2xl font-serif font-black text-[#7f1d1d]">
-                Đặt món thành công!
+                {t('cart.success_title')}
               </h4>
               <p className="text-xs text-stone-700 leading-relaxed font-literary">
-                Cảm ơn quý khách <strong>{customerName}</strong>! Cô giáo Hân và nhà bếp đang chuẩn bị những bát phở thơm nóng hổi. Quán sẽ gọi tới số <strong>{phone}</strong> để xác nhận và giao nhanh trong vòng 20–30 phút.
+                {t('cart.success_desc').replace('{name}', customerName).replace('{phone}', phone)}
               </p>
               <div className="bg-[#fbf7f0] border border-amber-300 p-3 rounded-2xl text-xs text-stone-800 w-full text-left font-literary">
-                <div className="font-serif font-bold mb-1 text-[#7f1d1d]">Mã đơn: #PHO-{Math.floor(100000 + Math.random() * 900000)}</div>
-                <div>Tổng thanh toán: <strong className="text-[#991b1b] font-serif text-sm">{formatPrice(subtotal)}</strong></div>
+                <div className="font-serif font-bold mb-1 text-[#7f1d1d]">{t('cart.order_code')} #PHO-{Math.floor(100000 + Math.random() * 900000)}</div>
+                <div>{t('cart.total_payment')} <strong className="text-[#991b1b] font-serif text-sm">{formatPrice(subtotal)}</strong></div>
                 {freeQuayCount > 0 && (
                   <div className="text-amber-800 font-medium mt-1">
-                    🎁 Kèm tặng {freeQuayCount} đĩa quẩy giòn thơm nóng.
+                    {lang === 'en' ? `🎁 Includes ${freeQuayCount} free plate(s) of crispy fried dough.` : `🎁 Kèm tặng ${freeQuayCount} đĩa quẩy giòn thơm nóng.`}
                   </div>
                 )}
               </div>
@@ -278,7 +280,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 onClick={handleFinish}
                 className="w-full py-3 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] text-amber-100 font-serif font-bold text-xs shadow-md hover:from-[#7f1d1d] hover:to-[#991b1b] transition cursor-pointer border border-amber-400/40"
               >
-                Hoàn tất & Tiếp tục xem thực đơn
+                {t('cart.finish_btn')}
               </button>
             </div>
           )}
@@ -288,7 +290,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         {step === 'cart' && items.length > 0 && (
           <div className="p-4 sm:p-5 bg-[#fbf7f0] border-t border-amber-200 space-y-3">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-stone-700 font-serif font-medium">Tạm tính:</span>
+              <span className="text-stone-700 font-serif font-medium">{t('cart.subtotal')}</span>
               <span className="text-xl font-serif font-black text-[#991b1b]">
                 {formatPrice(subtotal)}
               </span>
@@ -299,7 +301,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               onClick={() => setStep('checkout')}
               className="w-full py-3 rounded-full bg-gradient-to-r from-[#991b1b] to-[#b91c1c] hover:from-[#7f1d1d] hover:to-[#991b1b] text-amber-100 font-serif font-bold text-sm shadow-md transition flex items-center justify-center gap-2 cursor-pointer border border-amber-400/50"
             >
-              <span>Tiến hành giao phở nóng</span>
+              <span>{t('cart.checkout_btn')}</span>
               <ArrowRight className="w-4 h-4 text-amber-300" />
             </button>
           </div>

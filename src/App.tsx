@@ -15,15 +15,16 @@ import { DishDetailModal } from './components/DishDetailModal';
 import { FloatingWidgets } from './components/FloatingWidgets';
 import { DISHES } from './data/mockData';
 import { Dish, CartItem } from './types';
+import { useLanguage } from './context/LanguageContext';
 
 export default function App() {
+  const { lang } = useLanguage();
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isReservationOpen, setIsReservationOpen] = useState(false);
   const [selectedDish, setSelectedDish] = useState<Dish | null>(null);
   const [activeSection, setActiveSection] = useState('trang-chu');
-  const [currentLang, setCurrentLang] = useState<'vi' | 'en'>('vi');
 
   // Cart operations
   const handleAddToCart = (dish: Dish, quantity: number = 1) => {
@@ -78,7 +79,11 @@ export default function App() {
     } else if (sectionId === 'he-thong-cua-hang') {
       document.getElementById('he-thong-cua-hang')?.scrollIntoView({ behavior: 'smooth' });
     } else if (sectionId === 'tuyen-dung') {
-      alert('Phở Ngọc Hân tuyển dụng nhân viên phụ bếp, chạy bàn, ưu tiên các bạn sinh viên ĐH Xây Dựng, Bách Khoa làm ca linh hoạt. Vui lòng liên hệ hotline 0988 567 899!');
+      alert(
+        lang === 'en'
+          ? 'Phở Ngọc Hân is hiring kitchen staff and servers, with flexible shifts for NUCE and HUST students. Please contact hotline 0988 567 899!'
+          : 'Phở Ngọc Hân tuyển dụng nhân viên phụ bếp, chạy bàn, ưu tiên các bạn sinh viên ĐH Xây Dựng, Bách Khoa làm ca linh hoạt. Vui lòng liên hệ hotline 0988 567 899!'
+      );
     } else if (sectionId === 'lien-he') {
       document.getElementById('lien-he')?.scrollIntoView({ behavior: 'smooth' });
     }
@@ -96,8 +101,6 @@ export default function App() {
         onOpenReservation={() => setIsReservationOpen(true)}
         activeSection={activeSection}
         onNavigate={handleNavigate}
-        currentLang={currentLang}
-        onToggleLang={() => setCurrentLang((prev) => (prev === 'vi' ? 'en' : 'vi'))}
       />
 
       {/* 2. Hero Promotion Banner */}
@@ -123,6 +126,7 @@ export default function App() {
         />
 
         {/* 5. Brand Heritage & Story of Retired Civil Engineering Teacher */}
+        <BrandStory />
 
         {/* 6. Videos Carousel */}
         <VideoSection />

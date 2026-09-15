@@ -4,8 +4,10 @@ import { Calendar, ArrowRight, X, Sparkles, BookOpen } from 'lucide-react';
 import { BLOG_POSTS } from '../data/mockData';
 import { BlogPost } from '../types';
 import { ImagePlaceholder } from './ImagePlaceholder';
+import { useLanguage } from '../context/LanguageContext';
 
 export const BlogSection: React.FC = () => {
+  const { lang, t, getBlogTitle, getBlogExcerpt, getBlogContent, getBlogCategory } = useLanguage();
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
 
   return (
@@ -19,14 +21,14 @@ export const BlogSection: React.FC = () => {
         className="text-center mb-12"
       >
         <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-[#fbf7f0] border border-amber-300/80 shadow-xs mb-3">
-          <span className="seal-stamp text-[10px] py-0.5 px-1.5">BÚT KÝ</span>
+          <span className="seal-stamp text-[10px] py-0.5 px-1.5">{t('blog.seal')}</span>
           <span className="font-serif font-semibold text-xs tracking-widest text-[#7f1d1d] uppercase">
-            Chuyện Nghề & Ký Ức Hà Thành
+            {t('blog.eyebrow')}
           </span>
         </div>
 
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-serif font-black tracking-wide text-[#7f1d1d]">
-          Blog Ẩm Thực Phở
+          {t('blog.heading')}
         </h2>
 
         {/* Traditional Gold Motif Divider */}
@@ -39,60 +41,66 @@ export const BlogSection: React.FC = () => {
 
       {/* 3 Articles Grid with Staggered Entrance */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-        {BLOG_POSTS.map((post, index) => (
-          <motion.article
-            key={post.id}
-            id={`blog-card-${post.id}`}
-            onClick={() => setSelectedPost(post)}
-            initial={{ opacity: 0, y: 35 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: index * 0.12 }}
-            whileHover={{ 
-              y: -8, 
-              boxShadow: "0 20px 30px -8px rgba(127, 29, 29, 0.15)",
-              transition: { duration: 0.25 }
-            }}
-            className="group bg-[#fffdfa] rounded-2xl overflow-hidden shadow-xs border border-amber-200/90 flex flex-col cursor-pointer transition-colors hover:border-[#991b1b]"
-          >
-            {/* Post Image with resilient placeholder */}
-            <div className="relative aspect-[16/10] w-full overflow-hidden bg-stone-100 border-b border-amber-200/60">
-              <ImagePlaceholder
-                src={post.image}
-                alt={post.title}
-                aspectRatio="banner"
-                className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
-              />
-              <span className="absolute top-3 left-3 bg-[#7f1d1d] text-amber-100 border border-amber-400/50 text-[10px] font-serif font-bold px-3 py-1 rounded-full shadow-md">
-                {post.category}
-              </span>
-            </div>
+        {BLOG_POSTS.map((post, index) => {
+          const title = getBlogTitle(post);
+          const excerpt = getBlogExcerpt(post);
+          const category = getBlogCategory(post);
 
-            {/* Post Content */}
-            <div className="p-6 flex flex-col flex-grow">
-              <h3 className="text-base sm:text-lg font-serif font-bold text-stone-900 group-hover:text-[#991b1b] transition-colors line-clamp-2">
-                {post.title}
-              </h3>
-
-              {/* Date */}
-              <div className="flex items-center gap-1.5 text-xs text-amber-800 font-literary my-2.5">
-                <Calendar className="w-3.5 h-3.5 text-[#991b1b]" />
-                <span>Ngày {post.date}</span>
+          return (
+            <motion.article
+              key={post.id}
+              id={`blog-card-${post.id}`}
+              onClick={() => setSelectedPost(post)}
+              initial={{ opacity: 0, y: 35 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.5, delay: index * 0.12 }}
+              whileHover={{ 
+                y: -8, 
+                boxShadow: "0 20px 30px -8px rgba(127, 29, 29, 0.15)",
+                transition: { duration: 0.25 }
+              }}
+              className="group bg-[#fffdfa] rounded-2xl overflow-hidden shadow-xs border border-amber-200/90 flex flex-col cursor-pointer transition-colors hover:border-[#991b1b]"
+            >
+              {/* Post Image with resilient placeholder */}
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-stone-100 border-b border-amber-200/60">
+                <ImagePlaceholder
+                  src={post.image}
+                  alt={title}
+                  aspectRatio="banner"
+                  className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
+                />
+                <span className="absolute top-3 left-3 bg-[#7f1d1d] text-amber-100 border border-amber-400/50 text-[10px] font-serif font-bold px-3 py-1 rounded-full shadow-md">
+                  {category}
+                </span>
               </div>
 
-              {/* Excerpt */}
-              <p className="text-xs sm:text-sm text-stone-600 line-clamp-3 leading-relaxed font-literary">
-                {post.excerpt}
-              </p>
+              {/* Post Content */}
+              <div className="p-6 flex flex-col flex-grow">
+                <h3 className="text-base sm:text-lg font-serif font-bold text-stone-900 group-hover:text-[#991b1b] transition-colors line-clamp-2">
+                  {title}
+                </h3>
 
-              <div className="mt-4 pt-3 border-t border-amber-100 flex items-center text-xs font-serif font-bold text-[#991b1b] group-hover:translate-x-1.5 transition-transform">
-                <BookOpen className="w-3.5 h-3.5 mr-1" />
-                <span>Đọc tâm sự</span>
-                <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                {/* Date */}
+                <div className="flex items-center gap-1.5 text-xs text-amber-800 font-literary my-2.5">
+                  <Calendar className="w-3.5 h-3.5 text-[#991b1b]" />
+                  <span>{t('blog.date_prefix')} {post.date}</span>
+                </div>
+
+                {/* Excerpt */}
+                <p className="text-xs sm:text-sm text-stone-600 line-clamp-3 leading-relaxed font-literary">
+                  {excerpt}
+                </p>
+
+                <div className="mt-4 pt-3 border-t border-amber-100 flex items-center text-xs font-serif font-bold text-[#991b1b] group-hover:translate-x-1.5 transition-transform">
+                  <BookOpen className="w-3.5 h-3.5 mr-1" />
+                  <span>{t('blog.read_more')}</span>
+                  <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                </div>
               </div>
-            </div>
-          </motion.article>
-        ))}
+            </motion.article>
+          );
+        })}
       </div>
 
       {/* Blog Article Reader Modal with Animated Scale & Fade */}
@@ -115,14 +123,14 @@ export const BlogSection: React.FC = () => {
               <div className="relative aspect-video w-full">
                 <ImagePlaceholder
                   src={selectedPost.image}
-                  alt={selectedPost.title}
+                  alt={getBlogTitle(selectedPost)}
                   aspectRatio="video"
                   className="w-full h-full object-cover"
                 />
                 <button
                   onClick={() => setSelectedPost(null)}
                   className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 hover:bg-black text-white flex items-center justify-center cursor-pointer transition"
-                  aria-label="Đóng bài viết"
+                  aria-label={t('blog.close')}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -130,18 +138,18 @@ export const BlogSection: React.FC = () => {
 
               <div className="p-6 overflow-y-auto">
                 <div className="flex items-center gap-2 text-xs text-[#d96b0c] font-bold mb-2">
-                  <span>{selectedPost.category}</span>
+                  <span>{getBlogCategory(selectedPost)}</span>
                   <span>•</span>
-                  <span>Ngày {selectedPost.date}</span>
+                  <span>{t('blog.date_prefix')} {selectedPost.date}</span>
                 </div>
 
                 <h3 className="text-xl sm:text-2xl font-bold font-serif text-stone-900 mb-4">
-                  {selectedPost.title}
+                  {getBlogTitle(selectedPost)}
                 </h3>
 
                 <div className="prose prose-sm text-stone-700 space-y-3 leading-relaxed whitespace-pre-line">
-                  <p className="font-medium text-stone-900">{selectedPost.excerpt}</p>
-                  {selectedPost.content && <p>{selectedPost.content}</p>}
+                  <p className="font-medium text-stone-900">{getBlogExcerpt(selectedPost)}</p>
+                  <p>{getBlogContent(selectedPost)}</p>
                 </div>
 
                 <div className="mt-8 pt-4 border-t border-stone-200 flex justify-end">
@@ -149,7 +157,7 @@ export const BlogSection: React.FC = () => {
                     onClick={() => setSelectedPost(null)}
                     className="px-6 py-2.5 rounded-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold transition cursor-pointer shadow-md"
                   >
-                    Đóng
+                    {t('blog.close')}
                   </button>
                 </div>
               </div>

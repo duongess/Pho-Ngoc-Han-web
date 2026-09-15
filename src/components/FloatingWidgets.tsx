@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Phone, MapPin, MessageCircle, X, Send, CalendarCheck, Bike, ArrowUp } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FloatingWidgetsProps {
   onOpenReservation: () => void;
@@ -13,6 +14,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
   onScrollToStores,
   onOpenCart,
 }) => {
+  const { lang, t } = useLanguage();
   const [chatOpen, setChatOpen] = useState(false);
   const [chatDismissed, setChatDismissed] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -21,8 +23,11 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
   const [messages, setMessages] = useState([
     {
       sender: 'bot',
-      text: 'Chào mừng quý khách đến với Phở Ngọc Hân! Bạn muốn đặt phở mang đi, đặt bàn hay cần tư vấn bát phở hợp khẩu vị ạ?',
-      time: 'Vừa xong',
+      text:
+        lang === 'en'
+          ? 'Welcome to Phở Ngọc Hân! Would you like to order takeout, reserve a table, or need recommendations for your taste?'
+          : 'Chào mừng quý khách đến với Phở Ngọc Hân! Bạn muốn đặt phở mang đi, đặt bàn hay cần tư vấn bát phở hợp khẩu vị ạ?',
+      time: lang === 'en' ? 'Just now' : 'Vừa xong',
     },
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -51,7 +56,10 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
     if (!inputMessage.trim()) return;
 
     const userText = inputMessage;
-    setMessages((prev) => [...prev, { sender: 'user', text: userText, time: 'Bây giờ' }]);
+    setMessages((prev) => [
+      ...prev,
+      { sender: 'user', text: userText, time: lang === 'en' ? 'Now' : 'Bây giờ' },
+    ]);
     setInputMessage('');
 
     // Friendly auto-response
@@ -60,8 +68,11 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
         ...prev,
         {
           sender: 'bot',
-          text: 'Dạ Cô Hân và quán đã nhận tin nhắn ạ! Quý khách cũng có thể gọi ngay Hotline 0988 567 899 để được phục vụ những bát phở nóng hổi nhanh nhất!',
-          time: 'Vừa xong',
+          text:
+            lang === 'en'
+              ? 'Teacher Han and our team have received your message! You can also call hotline 0988 567 899 for immediate piping hot bowl delivery!'
+              : 'Dạ Cô Hân và quán đã nhận tin nhắn ạ! Quý khách cũng có thể gọi ngay Hotline 0988 567 899 để được phục vụ những bát phở nóng hổi nhanh nhất!',
+          time: lang === 'en' ? 'Just now' : 'Vừa xong',
         },
       ]);
     }, 800);
@@ -82,7 +93,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="group flex items-center gap-2.5 bg-[#fffdfa] text-stone-900 pl-2 pr-4 py-1.5 rounded-full shadow-2xl border-2 border-[#991b1b] transition-all cursor-pointer"
-          title="Gọi giao phở nóng tận nơi"
+          title={lang === 'en' ? 'Call for hot phở delivery' : 'Gọi giao phở nóng tận nơi'}
         >
           {/* Red Circle with Delivery Scooter */}
           <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#7f1d1d] to-[#b91c1c] text-amber-200 flex items-center justify-center shadow-md animate-pulse border border-amber-300/40">
@@ -90,7 +101,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           </div>
           <div className="flex flex-col text-left">
             <span className="text-[10px] text-amber-900 font-serif font-medium leading-none">
-              Giao phở nóng tận nơi
+              {lang === 'en' ? 'Hot Delivery To Door' : 'Giao phở nóng tận nơi'}
             </span>
             <span className="text-sm font-black text-[#991b1b] font-serif leading-tight">
               0988 567 899
@@ -120,7 +131,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           whileHover={{ scale: 1.15, x: -3 }}
           whileTap={{ scale: 0.92 }}
           className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#fffdfa] text-[#7f1d1d] hover:bg-[#7f1d1d] hover:text-amber-100 shadow-xl flex items-center justify-center border border-amber-300 transition-colors cursor-pointer"
-          title="Xem quán Phở Ngọc Hân"
+          title={lang === 'en' ? 'View Phở Ngọc Hân locations' : 'Xem quán Phở Ngọc Hân'}
         >
           <MapPin className="w-5 h-5" />
         </motion.button>
@@ -132,7 +143,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           whileHover={{ scale: 1.15, x: -3 }}
           whileTap={{ scale: 0.92 }}
           className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#fffdfa] text-[#7f1d1d] hover:bg-[#7f1d1d] hover:text-amber-100 shadow-xl flex items-center justify-center border border-amber-300 transition-colors cursor-pointer"
-          title="Đặt bàn ngay"
+          title={lang === 'en' ? 'Book a table now' : 'Đặt bàn ngay'}
         >
           <CalendarCheck className="w-5 h-5" />
         </motion.button>
@@ -149,8 +160,8 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
               whileHover={{ scale: 1.15, x: -3 }}
               whileTap={{ scale: 0.9 }}
               className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#450a0a] text-amber-300 hover:text-white shadow-2xl flex items-center justify-center border border-amber-400/40 cursor-pointer overflow-hidden"
-              title="Cuộn lên đầu trang"
-              aria-label="Lên đầu trang"
+              title={lang === 'en' ? 'Scroll to top' : 'Cuộn lên đầu trang'}
+              aria-label={lang === 'en' ? 'Scroll to top' : 'Lên đầu trang'}
             >
               {/* Progress ring SVG */}
               <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none" viewBox="0 0 36 36">
@@ -192,7 +203,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
               <button
                 onClick={() => setChatDismissed(true)}
                 className="absolute -top-1.5 -left-1.5 w-4 h-4 rounded-full bg-stone-300 hover:bg-stone-400 text-stone-700 flex items-center justify-center text-[10px] cursor-pointer"
-                aria-label="Đóng thông báo"
+                aria-label={lang === 'en' ? 'Close message' : 'Đóng thông báo'}
               >
                 ×
               </button>
@@ -201,7 +212,9 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
                 <span>Phở Ngọc Hân</span>
               </div>
               <p className="text-stone-600 leading-snug font-literary">
-                Chào mừng quý khách đến với quán phở của Cô giáo Hân!
+                {lang === 'en'
+                  ? 'Welcome to Teacher Han’s traditional Phở restaurant!'
+                  : 'Chào mừng quý khách đến với quán phở của Cô giáo Hân!'}
               </p>
             </motion.div>
           )}
@@ -216,7 +229,7 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
           className="bg-gradient-to-r from-[#7f1d1d] to-[#991b1b] hover:from-[#6b1414] hover:to-[#7f1d1d] text-amber-100 border border-amber-400/40 px-4 py-2.5 rounded-full shadow-xl flex items-center gap-2 font-serif font-bold text-xs sm:text-sm cursor-pointer"
         >
           <MessageCircle className="w-4 h-4 text-amber-300 fill-current" />
-          <span>Trò chuyện</span>
+          <span>{lang === 'en' ? 'Chat' : 'Trò chuyện'}</span>
         </motion.button>
 
         {/* Live Chat Popover Window */}
@@ -237,13 +250,15 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
                   </div>
                   <div>
                     <h4 className="font-serif font-bold text-sm leading-none text-amber-100">Phở Ngọc Hân</h4>
-                    <span className="text-[10px] text-amber-200/80 font-literary">Cô Hân & nhà bếp trực tuyến</span>
+                    <span className="text-[10px] text-amber-200/80 font-literary">
+                      {lang === 'en' ? 'Teacher Han & Kitchen Online' : 'Cô Hân & nhà bếp trực tuyến'}
+                    </span>
                   </div>
                 </div>
                 <button
                   onClick={() => setChatOpen(false)}
                   className="text-amber-200 hover:text-white p-1 cursor-pointer"
-                  aria-label="Đóng chat"
+                  aria-label={lang === 'en' ? 'Close chat' : 'Đóng chat'}
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -276,13 +291,13 @@ export const FloatingWidgets: React.FC<FloatingWidgetsProps> = ({
                   type="text"
                   value={inputMessage}
                   onChange={(e) => setInputMessage(e.target.value)}
-                  placeholder="Nhắn tin với quán Cô Hân..."
+                  placeholder={lang === 'en' ? 'Message Teacher Han’s kitchen...' : 'Nhắn tin với quán Cô Hân...'}
                   className="flex-1 bg-[#fbf7f0] border border-amber-200 rounded-full px-3.5 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-[#991b1b]"
                 />
                 <button
                   type="submit"
                   className="w-8 h-8 rounded-full bg-[#991b1b] text-amber-100 flex items-center justify-center hover:bg-[#7f1d1d] transition shrink-0 cursor-pointer border border-amber-400/40"
-                  aria-label="Gửi tin nhắn"
+                  aria-label={lang === 'en' ? 'Send message' : 'Gửi tin nhắn'}
                 >
                   <Send className="w-3.5 h-3.5" />
                 </button>
