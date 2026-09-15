@@ -46,10 +46,6 @@ export const BrandStory: React.FC = () => {
               </div>
             </div>
 
-            <p className="font-calligraphy text-2xl sm:text-3xl text-amber-300 font-normal mb-5 leading-snug">
-              Chuyện người cô giáo Đại học Xây Dựng sau ngày về hưu
-            </p>
-
             <div className="space-y-4 text-stone-300 font-literary leading-relaxed text-justify text-sm sm:text-base">
               <p>
                 <span className="float-left text-5xl sm:text-6xl font-serif font-black text-amber-400 mr-3 leading-none drop-shadow">

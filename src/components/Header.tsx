@@ -63,7 +63,6 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'thuc-don', label: currentLang === 'vi' ? 'THỰC ĐƠN' : 'MENU' },
     { id: 'blog-am-thuc', label: currentLang === 'vi' ? 'BLOG ẨM THỰC' : 'BLOG' },
     { id: 'he-thong-cua-hang', label: currentLang === 'vi' ? 'HỆ THỐNG CỬA HÀNG' : 'LOCATIONS' },
-    { id: 'tuyen-dung', label: currentLang === 'vi' ? 'TUYỂN DỤNG' : 'CAREERS' },
     { id: 'lien-he', label: currentLang === 'vi' ? 'LIÊN HỆ' : 'CONTACT' },
   ];
 

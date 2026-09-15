@@ -29,6 +29,28 @@ export function getTikTokId(url?: string): string | null {
   return match ? match[1] : null;
 }
 
+// Convert seconds into formatted MM:SS or H:MM:SS
+export function formatVideoDuration(seconds: number): string {
+  if (!seconds || isNaN(seconds) || seconds <= 0) return '';
+  const total = Math.round(seconds);
+  const hrs = Math.floor(total / 3600);
+  const mins = Math.floor((total % 3600) / 60);
+  const secs = total % 60;
+
+  if (hrs > 0) {
+    return `${hrs}:${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  }
+  return `${mins < 10 ? '0' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
+}
+
+// Declare YouTube IFrame API global type
+declare global {
+  interface Window {
+    YT?: any;
+    onYouTubeIframeAPIReady?: () => void;
+  }
+}
+
 // Resolve best thumbnail: if YouTube URL is provided, automatically resolve to YouTube's image if needed
 export function resolveVideoThumbnail(video: { thumbnail: string; videoUrl?: string }): string {
   const ytId = getYouTubeId(video.videoUrl);
@@ -46,6 +68,39 @@ export const VideoSection: React.FC = () => {
   const [isPlayingModal, setIsPlayingModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(1000);
+
+  // Dynamic durations mapped by video ID, cached in localStorage
+  const [videoDurations, setVideoDurations] = useState<Record<string, string>>(() => {
+    const initial: Record<string, string> = {};
+    // Clean up any inaccurate cached durations (e.g., vlog-ba-nam erroneously cached as ~2p)
+    try {
+      const cachedVlog = localStorage.getItem('pho_video_dur_vlog-ba-nam');
+      if (cachedVlog && (cachedVlog.startsWith('02:') || cachedVlog.startsWith('2:'))) {
+        localStorage.removeItem('pho_video_dur_vlog-ba-nam');
+      }
+    } catch {}
+
+    VIDEOS.forEach((v) => {
+      try {
+        const cached = localStorage.getItem(`pho_video_dur_${v.id}`);
+        initial[v.id] = cached || v.duration || '01:00';
+      } catch {
+        initial[v.id] = v.duration || '01:00';
+      }
+    });
+    return initial;
+  });
+
+  const updateVideoDuration = (videoId: string, formattedDuration: string) => {
+    if (!formattedDuration) return;
+    setVideoDurations((prev) => {
+      if (prev[videoId] === formattedDuration) return prev;
+      try {
+        localStorage.setItem(`pho_video_dur_${videoId}`, formattedDuration);
+      } catch {}
+      return { ...prev, [videoId]: formattedDuration };
+    });
+  };
 
   // Measure container for accurate center alignment of sliding cards
   useEffect(() => {
@@ -110,14 +165,33 @@ export const VideoSection: React.FC = () => {
 
   let embedSrc = '';
   if (currentYtId) {
-    embedSrc = `https://www.youtube-nocookie.com/embed/${currentYtId}?autoplay=1&rel=0&playsinline=1`;
+    embedSrc = `https://www.youtube-nocookie.com/embed/${currentYtId}?autoplay=1&rel=0&playsinline=1&enablejsapi=1`;
   } else if (currentTtId) {
     embedSrc = `https://www.tiktok.com/embed/v2/${currentTtId}`;
   } else if (currentVideo.videoUrl) {
     embedSrc = currentVideo.videoUrl;
   } else {
-    embedSrc = 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1';
+    embedSrc = 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&enablejsapi=1';
   }
+
+  // Listen to postMessage from embedded YouTube player in modal to capture exact duration
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      try {
+        if (!event.data) return;
+        const data = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+        if (data && data.info && typeof data.info.duration === 'number' && data.info.duration > 0) {
+          const formatted = formatVideoDuration(data.info.duration);
+          if (formatted && currentVideo) {
+            updateVideoDuration(currentVideo.id, formatted);
+          }
+        }
+      } catch {}
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, [currentVideo]);
 
   return (
     <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden select-none">
@@ -272,9 +346,12 @@ export const VideoSection: React.FC = () => {
                         </p>
                       </div>
 
-                      <span className="text-[11px] sm:text-xs bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded text-amber-200 font-mono font-bold shrink-0 border border-white/20 flex items-center gap-1">
+                      <span 
+                        className="text-[11px] sm:text-xs bg-black/60 backdrop-blur-xs px-2 py-0.5 rounded text-amber-200 font-mono font-bold shrink-0 border border-white/20 flex items-center gap-1"
+                        title="Thời lượng video"
+                      >
                         <Clock className="w-3 h-3 text-amber-300" />
-                        {video.duration}
+                        {videoDurations[video.id] || video.duration || '01:00'}
                       </span>
                     </div>
 
@@ -329,7 +406,7 @@ export const VideoSection: React.FC = () => {
                   {currentVideo.channel}
                 </span>
                 <span className="text-stone-300">•</span>
-                <span className="text-stone-500 font-serif">Thời lượng: {currentVideo.duration}</span>
+                <span className="text-stone-500 font-serif">Thời lượng: {videoDurations[currentVideo.id] || currentVideo.duration || '01:00'}</span>
               </p>
             </motion.div>
           </AnimatePresence>
@@ -402,7 +479,7 @@ export const VideoSection: React.FC = () => {
               <div className="p-4 bg-stone-900 text-stone-100 flex items-center justify-between gap-3">
                 <div className="min-w-0">
                   <h4 className="font-bold text-sm sm:text-base font-serif text-amber-200 truncate">{currentVideo.title}</h4>
-                  <p className="text-xs text-stone-400 mt-0.5">Phở Ngọc Hân - Cô giáo Đại học Xây Dựng về hưu</p>
+                  <p className="text-xs text-stone-400 mt-0.5">Phở Ngọc Hân</p>
                 </div>
                 {currentVideo.videoUrl && (
                   <a

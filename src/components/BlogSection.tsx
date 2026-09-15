@@ -29,10 +29,6 @@ export const BlogSection: React.FC = () => {
           Blog Ẩm Thực Phở
         </h2>
 
-        <p className="font-calligraphy text-2xl sm:text-3xl text-[#b45309] mt-2 font-normal">
-          Ghi chép của cô giáo già về nồi nước dùng và tình nghĩa học trò
-        </p>
-
         {/* Traditional Gold Motif Divider */}
         <div className="flex items-center justify-center gap-3 my-3">
           <span className="w-12 sm:w-20 h-px bg-gradient-to-r from-transparent to-[#b45309]/80" />

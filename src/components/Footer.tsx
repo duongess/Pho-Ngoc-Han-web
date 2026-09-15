@@ -36,7 +36,7 @@ export const Footer: React.FC = () => {
             </div>
 
             <p className="text-xs text-stone-400 leading-relaxed pt-2 font-literary">
-              Khởi nguồn từ tình yêu ẩm thực và cái tâm của cô giáo Đại học Xây Dựng về hưu, Phở Ngọc Hân gìn giữ nồi nước dùng ninh xương ống bò 18 tiếng ngọt thanh nguyên bản, trao gửi trọn vẹn phong vị Hà Thành xưa.
+              Khởi nguồn từ tình yêu ẩm thực và cái tâm, Phở Ngọc Hân gìn giữ nồi nước dùng ninh xương ống bò 18 tiếng ngọt thanh nguyên bản, trao gửi trọn vẹn phong vị Hà Thành xưa.
             </p>
 
             <div className="flex items-center gap-2 text-xs text-amber-300 font-serif bg-amber-950/40 p-2.5 rounded-xl border border-amber-900/50">
@@ -87,9 +87,6 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <a href="#thuc-don" className="hover:text-amber-300 transition">Phở cuốn & phở xào giòn</a>
-              </li>
-              <li>
-                <a href="#gioi-thieu" className="hover:text-amber-300 transition">Chuyện cô giáo Xây Dựng</a>
               </li>
               <li>
                 <a href="#he-thong-cua-hang" className="hover:text-amber-300 transition">Hệ thống cơ sở quán</a>

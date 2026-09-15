@@ -42,7 +42,6 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onOrderNow }) => {
       id: 'promo-cuon-xao',
       badge: 'PHỞ BÒ ĐẶC BIỆT THẬP CẨM',
       headlineMain: 'BÁT ĐẶC BIỆT ĐẦY ĐẶN',
-      headlineHighlight: 'Đượm Tình Cô Giáo Xây Dựng',
       badgeTitle: 'ĐẦY ĐỦ VỊ NGON',
       badgeItems: ['Tái, nạm, gầu, gân & trứng trần', 'Tặng kèm đĩa quẩy giòn rụm vàng ươm'],
       footerNote: '* Bát phở chất chứa tấm lòng của cô giáo gửi tới học trò',
@@ -81,7 +80,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({ onOrderNow }) => {
       {/* Dynamic Traditional Paper & Golden Shimmer Texture */}
       
       <img
-      src="/bia.jpg"
+      src="/bia.jpeg"
       loading="lazy"
       referrerPolicy="no-referrer"
       className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-15 pointer-events-none bg-[radial-gradient(#fde047_1px,transparent_1px)] [background-size:28px_28px]"
