@@ -330,13 +330,13 @@ export const STORE_BRANCHES: StoreBranch[] = [
 
 export const VIDEOS = [
   {
-    id: 'vlog-ba-nam',
-    title: 'youtuber lên thành phố ăn thử Phở Cô Hân - Khen nức nở!',
+    id: 'gioi-thieu',
+    title: 'Sự ra đời của Phở - Món ăn Việt Nam nổi tiếng thế giới',
     channel: 'Phở Ngọc Hân Official',
     views: '152K lượt xem',
-    thumbnail: 'https://i.ytimg.com/vi/KHBfDmmqJiQ/hqdefault.jpg',
-    videoUrl: 'https://www.youtube.com/shorts/KHBfDmmqJiQ?feature=share',
-    duration: '01:00',
+    thumbnail: 'video/thumbnail.jpg',
+    videoUrl: 'video/gioi-thieu-pho.mp4',
+    duration: '01:39',
   },
   {
     id: 'quy-trinh-noi-pho-18h',
