@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, X, ChevronLeft, ChevronRight, Eye, Film, Sparkles, Clock, Youtube, ExternalLink } from 'lucide-react';
 import { VIDEOS } from '../data/mockData';
@@ -130,20 +130,35 @@ export const VideoSection: React.FC = () => {
   const totalVideos = VIDEOS.length;
   const currentVideo = VIDEOS[activeVideoIndex];
 
+  // Standard continuous sliding carousel:
+  // We duplicate the VIDEOS list 7 times (3 sets before, 1 middle set, 3 sets after).
+  // The track is a single flex row that translates smoothly via `x: trackOffset`.
+  // When activeVideoIndex moves left or right, the track simply slides horizontally!
+  const SET_COUNT = 7;
+  const MIDDLE_SET = Math.floor(SET_COUNT / 2); // 3
+  const [slideStep, setSlideStep] = useState(MIDDLE_SET * totalVideos);
+
   const handlePrev = () => {
     setDirection(-1);
+    setSlideStep((prev) => prev - 1);
     setActiveVideoIndex((prev) => (prev - 1 + totalVideos) % totalVideos);
   };
 
   const handleNext = () => {
     setDirection(1);
+    setSlideStep((prev) => prev + 1);
     setActiveVideoIndex((prev) => (prev + 1) % totalVideos);
   };
 
-  const handleSelect = (idx: number) => {
-    if (idx === activeVideoIndex) return;
-    setDirection(idx > activeVideoIndex ? 1 : -1);
-    setActiveVideoIndex(idx);
+  const handleSelect = (targetIdx: number) => {
+    if (targetIdx === activeVideoIndex) return;
+    const diff = targetIdx - activeVideoIndex;
+    let shortest = diff;
+    if (diff > totalVideos / 2) shortest = diff - totalVideos;
+    if (diff < -totalVideos / 2) shortest = diff + totalVideos;
+    setDirection(shortest >= 0 ? 1 : -1);
+    setSlideStep((prev) => prev + shortest);
+    setActiveVideoIndex(targetIdx);
   };
 
   // Keyboard navigation support
@@ -168,10 +183,27 @@ export const VideoSection: React.FC = () => {
 
   const gap = isMobile ? 14 : 24;
 
-  // Exact X offset to place active card dead-center in the slider container
-  const trackOffset = (containerWidth - cardWidth) / 2 - activeVideoIndex * (cardWidth + gap);
+  // Flattened array of duplicated video items with unique continuous indices
+  const allItems = useMemo(() => {
+    const items = [];
+    for (let set = 0; set < SET_COUNT; set++) {
+      for (let i = 0; i < totalVideos; i++) {
+        items.push({
+          uniqueId: `set-${set}-vid-${VIDEOS[i].id}`,
+          absoluteIndex: set * totalVideos + i,
+          videoIndex: i,
+          video: VIDEOS[i],
+        });
+      }
+    }
+    return items;
+  }, [totalVideos]);
+
+  // Center the active card in the carousel container
+  const trackOffset = (containerWidth - cardWidth) / 2 - slideStep * (cardWidth + gap);
 
   // Parse embed information for current video
+  const isDirectVideo = Boolean(currentVideo.videoUrl && (currentVideo.videoUrl.endsWith('.mp4') || currentVideo.videoUrl.endsWith('.webm') || currentVideo.videoUrl.startsWith('video/')));
   const currentYtId = getYouTubeId(currentVideo.videoUrl);
   const isCurrentShort = Boolean(currentVideo.videoUrl?.includes('/shorts/'));
   const currentTtId = getTikTokId(currentVideo.videoUrl);
@@ -182,7 +214,10 @@ export const VideoSection: React.FC = () => {
   } else if (currentTtId) {
     embedSrc = `https://www.tiktok.com/embed/v2/${currentTtId}`;
   } else if (currentVideo.videoUrl) {
-    embedSrc = currentVideo.videoUrl;
+    // If it's a relative path like 'video/gioi-thieu-pho.mp4', make sure it starts with '/'
+    embedSrc = currentVideo.videoUrl.startsWith('/') || currentVideo.videoUrl.startsWith('http')
+      ? currentVideo.videoUrl
+      : `/${currentVideo.videoUrl}`;
   } else {
     embedSrc = 'https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=1&enablejsapi=1';
   }
@@ -265,12 +300,12 @@ export const VideoSection: React.FC = () => {
 
         {/* Sliding Ribbon Track */}
         <div className="overflow-hidden py-4 px-1">
-          <motion.div
+          <motion.div 
             className="flex items-center cursor-grab active:cursor-grabbing"
             animate={{ x: trackOffset }}
             transition={{
-              duration: 0.6,
-              ease: [0.22, 1, 0.36, 1], // Silky smooth Apple-style glide deceleration
+              duration: 0.45,
+              ease: [0.25, 1, 0.5, 1], // Natural, crisp horizontal slide
             }}
             drag="x"
             dragConstraints={{ left: 0, right: 0 }}
@@ -284,38 +319,40 @@ export const VideoSection: React.FC = () => {
               }
             }}
           >
-            {VIDEOS.map((video, idx) => {
-              const isActive = idx === activeVideoIndex;
-              const isAdjacent = Math.abs(idx - activeVideoIndex) === 1;
-              const displayThumb = resolveVideoThumbnail(video);
+            {allItems.map((item) => {
+              const isActive = item.absoluteIndex === slideStep;
+              const isAdjacent = Math.abs(item.absoluteIndex - slideStep) === 1;
+              const displayThumb = resolveVideoThumbnail(item.video);
 
               return (
-                <motion.div
-                  key={video.id}
+                <div
+                  key={item.uniqueId}
                   style={{ width: cardWidth, marginRight: gap }}
-                  className="shrink-0 transition-transform duration-500"
-                  animate={{
-                    scale: isActive ? 1 : 0.9,
-                    opacity: isActive ? 1 : isAdjacent ? 0.65 : 0.35,
-                  }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  className="shrink-0 transition-transform duration-300 select-none will-change-transform"
                   onClick={() => {
-                    if (!isActive) handleSelect(idx);
+                    if (!isActive) {
+                      const diff = item.absoluteIndex - slideStep;
+                      setDirection(diff > 0 ? 1 : -1);
+                      setSlideStep(item.absoluteIndex);
+                      setActiveVideoIndex(item.videoIndex);
+                    }
                   }}
                 >
                   <div
-                    className={`relative aspect-video w-full rounded-2xl overflow-hidden bg-black transition-all duration-500 ${
+                    className={`relative aspect-video w-full rounded-2xl overflow-hidden bg-black transition-all duration-300 ${
                       isActive
-                        ? 'shadow-2xl ring-4 ring-[#b45309] cursor-default'
-                        : 'shadow-lg hover:shadow-xl hover:opacity-90 cursor-pointer ring-1 ring-black/10'
+                        ? 'shadow-2xl ring-4 ring-[#b45309] cursor-default scale-100 opacity-100 z-10'
+                        : isAdjacent
+                        ? 'shadow-lg hover:shadow-xl cursor-pointer scale-[0.92] opacity-65 ring-1 ring-black/10'
+                        : 'shadow-md cursor-pointer scale-[0.88] opacity-30 ring-1 ring-black/10'
                     }`}
                   >
                     {/* Thumbnail Image */}
                     <ImagePlaceholder
                       src={displayThumb}
-                      alt={getVideoTitle(video)}
+                      alt={getVideoTitle(item.video)}
                       aspectRatio="video"
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-105 pointer-events-none"
                     />
 
                     {/* Gradient Overlay */}
@@ -327,7 +364,7 @@ export const VideoSection: React.FC = () => {
                         <>
                           <span className="absolute w-full h-full rounded-full bg-red-600/40 animate-ping duration-1000" />
                           <motion.button
-                            id={`play-video-${video.id}`}
+                            id={`play-video-${item.video.id}`}
                             onClick={(e) => {
                               e.stopPropagation();
                               setIsPlayingModal(true);
@@ -352,10 +389,10 @@ export const VideoSection: React.FC = () => {
                       <div className="min-w-0">
                         <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] bg-[#991b1b] text-amber-100 border border-amber-400/40 px-2 py-0.5 rounded font-serif font-bold uppercase tracking-wider shadow-sm">
                           <Film className="w-3 h-3" />
-                          {video.videoUrl?.includes('/shorts/') ? 'YouTube Shorts' : 'Phở Ngọc Hân'}
+                          {item.video.videoUrl?.includes('/shorts/') ? 'YouTube Shorts' : (item.video.videoUrl?.endsWith('.mp4') || item.video.videoUrl?.includes('gioi-thieu')) ? 'Video Quán' : 'Phở Ngọc Hân'}
                         </span>
                         <p className="text-xs sm:text-sm md:text-base font-serif font-bold mt-1 line-clamp-1 drop-shadow-md text-white">
-                          {getVideoTitle(video)}
+                          {getVideoTitle(item.video)}
                         </p>
                       </div>
 
@@ -364,7 +401,7 @@ export const VideoSection: React.FC = () => {
                         title={t('video.duration')}
                       >
                         <Clock className="w-3 h-3 text-amber-300" />
-                        {videoDurations[video.id] || video.duration || '01:00'}
+                        {videoDurations[item.video.id] || item.video.duration || '01:00'}
                       </span>
                     </div>
 
@@ -373,7 +410,7 @@ export const VideoSection: React.FC = () => {
                       <div className="absolute inset-0 bg-transparent hover:bg-black/10 transition-colors" />
                     )}
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </motion.div>
@@ -480,13 +517,25 @@ export const VideoSection: React.FC = () => {
               </button>
 
               <div className={`${isCurrentShort ? 'aspect-[9/16] max-h-[75vh]' : 'aspect-video'} w-full bg-black flex items-center justify-center relative`}>
-                <iframe
-                  className="w-full h-full"
-                  src={embedSrc}
-                  title={getVideoTitle(currentVideo)}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+                {isDirectVideo ? (
+                  <video
+                    className="w-full h-full object-contain"
+                    src={embedSrc}
+                    controls
+                    autoPlay
+                    playsInline
+                  >
+                    Trình duyệt không hỗ trợ xem video trực tiếp.
+                  </video>
+                ) : (
+                  <iframe
+                    className="w-full h-full"
+                    src={embedSrc}
+                    title={getVideoTitle(currentVideo)}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                )}
               </div>
 
               <div className="p-4 bg-stone-900 text-stone-100 flex items-center justify-between gap-3">

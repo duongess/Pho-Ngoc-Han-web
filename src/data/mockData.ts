@@ -334,8 +334,8 @@ export const VIDEOS = [
     title: 'Sự ra đời của Phở - Món ăn Việt Nam nổi tiếng thế giới',
     channel: 'Phở Ngọc Hân Official',
     views: '152K lượt xem',
-    thumbnail: 'video/thumbnail.jpg',
-    videoUrl: 'video/gioi-thieu-pho.mp4',
+    thumbnail: '/video/thumbnail.jpg',
+    videoUrl: '/video/gioi-thieu-pho.mp4',
     duration: '01:39',
   },
   {
