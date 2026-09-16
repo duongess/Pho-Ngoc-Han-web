@@ -58,12 +58,12 @@ export const BrandStory: React.FC = () => {
                 <>
                   <p>
                     <span className="float-left text-5xl sm:text-6xl font-serif font-black text-amber-400 mr-3 leading-none drop-shadow">
-                      F
+                      A
                     </span>
-                    or over thirty years on the lecture podium at the <strong>National University of Civil Engineering (Hanoi)</strong>, Teacher Ngoc Han dedicated her youth to guiding generations of engineers and architects building enduring structures across Vietnam. On late evenings reviewing students’ blueprints, she nurtured a humble dream: when retiring from the chalkboard, she would open a warm, traditional phở parlor, personally simmering sweet and nourishing broth to welcome back former students and Hanoi food lovers.
+                    fter retiring from her lifelong career, Ms. Ngoc Han nurtured a humble dream: to open a warm, traditional phở parlor, personally simmering sweet and nourishing broth to welcome friends and Hanoi food lovers.
                   </p>
                   <p>
-                    Bringing the meticulous standards of a teacher and the precision of structural blueprints: Teacher Han’s broth <em>strictly says no to MSG and chemical additives</em>. Fresh beef marrow bones are cleansed with ginger wine and gently simmered for <strong>18 hours</strong> until the broth attains crystal clarity, silky golden glisten, and profound natural sweetness. The fragrant notes of cinnamon bark, roasted star anise, and native ginger weave through every tender cut of beef.
+                    With absolute meticulousness and dedication: Ms. Han’s broth <em>strictly says no to MSG and chemical additives</em>. Fresh beef marrow bones are cleansed with ginger wine and gently simmered for <strong>18 hours</strong> until the broth attains crystal clarity, silky golden glisten, and profound natural sweetness. The fragrant notes of cinnamon bark, roasted star anise, and native ginger weave through every tender cut of beef.
                   </p>
                   <p>
                     Every steaming bowl brought to your table is an earnest wish of peace and warmth for all walks of life navigating Hanoi’s bustling streets.
@@ -73,12 +73,12 @@ export const BrandStory: React.FC = () => {
                 <>
                   <p>
                     <span className="float-left text-5xl sm:text-6xl font-serif font-black text-amber-400 mr-3 leading-none drop-shadow">
-                      H
+                      S
                     </span>
-                    ơn ba mươi năm đứng trên bục giảng tại <strong>Trường Đại học Xây Dựng (Hà Nội)</strong>, Cô giáo Ngọc Hân đã dành trọn thanh xuân để dìu dắt biết bao thế hệ kỹ sư, kiến trúc sư xây đắp nên những công trình cho đất nước. Những đêm miệt mài bên đồ án của học trò, cô luôn ấp ủ một tâm nguyện mộc mạc: Ngày rời xa bảng đen phấn trắng, sẽ mở một quán phở nhỏ thơm thảo, tự tay đun nấu từng bát nước dùng ngọt lành để đón các em học trò cũ và người yêu ẩm thực tề tựu.
+                    au khi về hưu và khép lại chặng đường dài cống hiến cho công việc, cô Ngọc Hân luôn ấp ủ một tâm nguyện mộc mạc: Mở một quán phở nhỏ thơm thảo, tự tay đun nấu từng bát nước dùng ngọt lành để đón tiếp những người tri kỷ và người yêu ẩm thực tề tựu.
                   </p>
                   <p>
-                    Mang theo cái tâm chuẩn mực của nhà giáo cùng sự tỉ mỉ của người gắn bó với những bản vẽ kết cấu: Nồi nước phở của Cô Hân tuyệt đối <em>nói không với mì chính hay phụ gia công nghiệp</em>. Xương ống bò tươi được rửa qua rượu gừng, ninh liu riu suốt <strong>18 tiếng đồng hồ</strong> để từng giọt nước dùng đạt độ trong veo, sánh óng ánh và ngọt sâu nơi hậu vị. Hương thơm thanh nhã của quế chi, hoa hồi nướng và gừng ta quyện chặt vào từng thớ thịt bò mềm dẻo.
+                    Mang theo sự tỉ mỉ và cái tâm trọn vẹn trong từng chi tiết: Nồi nước phở của cô Hân tuyệt đối <em>nói không với mì chính hay phụ gia công nghiệp</em>. Xương ống bò tươi được rửa qua rượu gừng, ninh liu riu suốt <strong>18 tiếng đồng hồ</strong> để từng giọt nước dùng đạt độ trong veo, sánh óng ánh và ngọt sâu nơi hậu vị. Hương thơm thanh nhã của quế chi, hoa hồi nướng và gừng ta quyện chặt vào từng thớ thịt bò mềm dẻo.
                   </p>
                   <p>
                     Mỗi bát phở nóng hổi bưng ra bàn là một lời chúc bình an, chở che sự no ấm cho những bước chân bươn chải giữa phố phường Hà Nội.
@@ -87,19 +87,20 @@ export const BrandStory: React.FC = () => {
               )}
             </div>
 
+
             {/* Poetic quote in scroll design */}
             <div className="mt-6 pt-5 border-t border-amber-900/60 bg-black/20 p-4 rounded-2xl border border-amber-500/20 text-center">
               <Quote className="w-6 h-6 text-amber-400 mx-auto mb-1 opacity-75" />
               <p className="font-calligraphy text-2xl sm:text-3xl text-amber-200 leading-relaxed whitespace-pre-line">
                 {lang === 'en'
-                  ? '“Building grand structures for life,\nAnd brewing warm bowls of phở for those traveling far.”'
-                  : '“Xây những công trình lớn cho đời,\nVà nấu bát phở ấm lòng người đi xa.”'}
+                  ? '“Pouring a lifetime of dedication into every detail,\nAnd brewing warm bowls of phở for those traveling far.”'
+                  : '“Dành trọn tâm huyết cho từng chi tiết,\nVà nấu bát phở ấm lòng người đi xa.”'}
               </p>
               <div className="flex items-center justify-center gap-2 mt-3 text-xs sm:text-sm text-amber-300/80 font-serif italic">
                 <span>
                   {lang === 'en'
-                    ? '— Teacher Ngoc Han (Former Civil Engineering Faculty)'
-                    : '— Cô giáo Ngọc Hân (Nguyên Giảng viên ĐH Xây Dựng)'}
+                    ? '— Teacher Ngoc Han'
+                    : '— Cô giáo Ngọc Hân'}
                 </span>
                 <span className="seal-stamp text-[9px] py-0.5 px-1 tracking-normal not-italic">
                   {lang === 'en' ? 'INSCRIPTION' : 'CẨN BÚT'}
